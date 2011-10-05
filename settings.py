@@ -16,8 +16,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': ''
-        'NAME': ''
+        'ENGINE': '',
+        'NAME': '',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
