@@ -5,7 +5,7 @@ sys.path.insert(0, PROJECT_ROOT)
 
 # Django settings for beast project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
