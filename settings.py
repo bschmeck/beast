@@ -160,6 +160,6 @@ SERVER_EMAIL = ''
 LOGIN_URL = '/account/login/'
 LOGIN_REDIRECT_URL = '/account/'
 
-AUTHENTICATION_BACKENDS = ('picks.email-auth.EmailBackend',)
+AUTHENTICATION_BACKENDS = ('workouts.email-auth.EmailBackend',)
 
 from localsettings import *
