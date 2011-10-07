@@ -12,6 +12,5 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     
     # Examples:
-    # url(r'^$', 'beast.views.home', name='home'),
-    # url(r'^beast/', include('beast.foo.urls')),
+    url(r'^$', 'workouts.views.calendar'),
 )

@@ -1,0 +1,54 @@
+<html>
+<head>
+<title>Calendar</title>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.6.2.min.js"></script>
+<style type="text/css">
+.cell {
+  min-width: 100px;
+  min-height: 150px;
+}
+.date {
+  background: #5882fa;
+  font-size: 1.2em;
+  color: #fff;
+  text-align: center;
+}
+.text {
+  border: 1px solid #ccc;
+}
+.highlight {
+  background: #ff9;
+  cursor: pointer;
+}
+</style>
+<script type="text/javascript">
+$(function() {
+$(".text")
+.bind("mouseover", function(event) {
+  $(this).addClass("highlight");
+})
+.bind("mouseout", function(event) {
+  $(this).removeClass("highlight");
+})
+.bind("click", function(event) {
+  var re = /workout_(\d+)/;
+  var id = re.exec(this.id)[1];
+  var rowid = $(this).closest("tr").attr("id");
+  $("tr:not(#" + rowid + ")").hide("slow");
+  
+});
+});
+</script>
+</head>
+<body>
+<table width=100% cellspacing=0 cellpadding=0>
+{% for week in weeks %}
+  <tr id="week_{{forloop.counter}}">
+  {% for day in week %}
+    <td>{% include "workouts/calendar_cell.html" %}</td>
+  {% endfor %}
+  </tr>
+{% endfor %}
+</table>
+</body>
+</html>

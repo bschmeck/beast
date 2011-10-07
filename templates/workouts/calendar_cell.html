@@ -1,0 +1,9 @@
+<div class="cell">
+  <div class="date">{{day.dateStr}}</div>
+  {% for workout in day.workouts %}
+    <div class="text" id="workout_{{workout.id}}">
+      {{workout.startTime}}<br>
+      {{workout.title}}<br>
+    </div>
+  {% endfor %}
+</div>
