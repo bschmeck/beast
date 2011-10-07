@@ -13,4 +13,5 @@ urlpatterns = patterns(
     
     # Examples:
     url(r'^$', 'workouts.views.calendar'),
+    url(r'^workout/(?P<w_id>\d+)/$', 'workouts.views.workout'),
 )

@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
 from datetime import datetime, timedelta
@@ -38,4 +38,12 @@ def calendar(request):
         ret.append(w)
     return render_to_response('workouts/calendar.html',
                               {'weeks': ret},
+                              context_instance=RequestContext(request))
+
+def workout(request, w_id):
+    w = get_object_or_404(Workout, pk=w_id)
+    return render_to_response('workouts/workout.html',
+                              {'workout': w,
+                               'confirmed': w.confirmed.all(),
+                               'interested': w.interested.all()},
                               context_instance=RequestContext(request))
