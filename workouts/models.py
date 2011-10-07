@@ -15,9 +15,14 @@ class Workout(models.Model):
     tags = models.ManyToManyField('Tag', blank=True, null=True)
     title = models.CharField(max_length=50)
 
+    def __unicode__(self):
+        return str(self.startDate) + " - " + self.title
+
 class Tag(models.Model):
     text = models.CharField(max_length=50)
-
+    
+    def __unicode__(self):
+        return text
 
 
     
