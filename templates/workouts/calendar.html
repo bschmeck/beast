@@ -1,9 +1,15 @@
 <html>
 <head>
 <title>Calendar</title>
+<link href='http://fonts.googleapis.com/css?family=Michroma' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.8.16.custom.min.js"></script>
 <style type="text/css">
+h1 {
+  font-family: 'Michroma', Aria, serif; font-weight: 400;
+  font-size: 48px;
+  text-align: center;
+}
 .cell {
   min-width: 100px;
   min-height: 150px;
@@ -76,7 +82,8 @@ $("#workout").hide();
 </script>
 </head>
 <body>
-<table id="calendar" width=800 cellspacing=0 cellpadding=0>
+<h1>B.E.A.S.T.</h1>
+<table id="calendar" width=100% cellspacing=0 cellpadding=0>
 {% for week in weeks %}
   <tr id="week_{{forloop.counter}}">
   {% for day in week %}
