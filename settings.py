@@ -158,8 +158,9 @@ DEFAULT_FROM_EMAIL = ''
 SERVER_EMAIL = ''
 
 LOGIN_URL = '/account/login/'
-LOGIN_REDIRECT_URL = '/account/'
+LOGIN_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = ('workouts.email-auth.EmailBackend',)
+AUTH_PROFILE_MODULE = 'workouts.UserProfile'
 
 from localsettings import *

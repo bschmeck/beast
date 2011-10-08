@@ -14,4 +14,12 @@ urlpatterns = patterns(
     # Examples:
     url(r'^$', 'workouts.views.calendar'),
     url(r'^workout/(?P<w_id>\d+)/$', 'workouts.views.workout'),
+    (r'^account/login/$', 'django.contrib.auth.views.login'),
+    (r'^account/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+    (r'^account/password/reset/$', 'django.contrib.auth.views.password_reset', {'post_reset_redirect': '/account/password/reset/done/'}),
+    (r'^account/password/reset/done/$', 'django.contrib.auth.views.password_reset_done'),
+    (r'^account/password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm', {'post_reset_redirect': '/account/password/done/'}),
+    (r'^account/password/done/$', 'django.contrib.auth.views.password_reset_complete'),
+    (r'^account/register/$', 'workouts.views.accountCreate'),
+
 )

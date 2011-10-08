@@ -1,9 +1,58 @@
+from django import forms
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
 from datetime import datetime, timedelta
 
-from models import Workout
+from models import UserProfile, Workout
+
+@user_passes_test(lambda u: u.is_anonymous)
+def accountCreate(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        pwd = request.POST['password']
+        username = genUserName()
+        if User.objects.filter(email = email).exists():
+            return render_to_response('registration/register.html',
+                                      {'err_msg': "An account already exists with that email address."},
+                                      context_instance=RequestContext(request))
+
+        new_user = User.objects.create_user(username=username,
+                                            email = email,
+                                            password=pwd)
+        new_user.save()
+
+        profile = UserProfile()
+        profile.user = new_user
+        try:
+            dispName = request.POST['displayName']
+        except KeyError:
+            dispName = email
+        profile.notify = True
+        profile.save()
+
+        user = auth.authenticate(username=username,
+                                 password=pwd)
+        if user and user.is_active:
+            auth.login(request, user)
+        return HttpResponseRedirect("/")
+    else:
+        return render_to_response('registration/register.html',
+                                  {},
+                                  context_instance=RequestContext(request))
+
+def genUserName():
+    chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
+    while True:
+        ret = ''.join(random.choice(chars) for x in range(20))
+        try:
+            User.objects.get(username=ret)
+        except User.DoesNotExist:
+            return ret
 
 class CalendarDay:
     def __init__(self, dte):
@@ -42,8 +91,10 @@ def calendar(request):
 
 def workout(request, w_id):
     w = get_object_or_404(Workout, pk=w_id)
+    confirmed = map(lambda u: u.get_profile().displayName, w.confirmed.all())
+    interested = map(lambda u: u.get_profile().displayName, w.interested.all())
     return render_to_response('workouts/workout.html',
                               {'workout': w,
-                               'confirmed': w.confirmed.all(),
-                               'interested': w.interested.all()},
+                               'confirmed': confirmed,
+                               'interested': interested},
                               context_instance=RequestContext(request))

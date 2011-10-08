@@ -44,7 +44,7 @@ h1 {
 #workout .desc {
   background: #95bce2;
 }
-#workout th {
+#workout th, .userInfo {
   text-align: center;
 }
 </style>
@@ -83,6 +83,13 @@ $("#workout").hide();
 </head>
 <body>
 <h1>B.E.A.S.T.</h1>
+<div class="userInfo">
+{% if user.is_authenticated %}
+  <p>Logged in as {{user.email}} | <a href="/account/logout">Log Out</a></p>
+{% else %}
+  <p><a href="/account/login">Log In</a> | <a href="/account/register">Join</a></p>
+{% endif %}
+</div>
 <table id="calendar" width=100% cellspacing=0 cellpadding=0>
 {% for week in weeks %}
   <tr id="week_{{forloop.counter}}">

@@ -7,7 +7,7 @@
   <tr><td class="desc">Warmup</td><td>{{workout.warmupTime}}</td></tr>
 {% endif %}
 <tr><td class="desc">Description</td><td>{{workout.description|linebreaksbr}}</td></tr>
-<tr><td class="desc">Organizer</td><td>{{workout.organizer}}</td></tr>
+<tr><td class="desc">Organizer</td><td>{{workout.organizer.get_profile.displayName}} ({{workout.organizer.email}})</td></tr>
 <tr><td class="desc">Confirmed</td><td>{% for u in confirmed %} {{u}}, {% endfor %}</td></tr>
 <tr><td class="desc">Interested</td><td>{% for u in vinterested %} {{u}}, {% endfor %}</td></tr>
 </table>
