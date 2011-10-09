@@ -5,7 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
+from django.template import Context, RequestContext
+from django.template.loader import get_template
 
 from datetime import datetime, timedelta
 import json
@@ -139,9 +140,11 @@ def joinWorkout(request, w_id):
     showJoin = not request.user in w.confirmed.all()
     showMaybe = not request.user in w.interested.all()
     showDrop = not (showJoin and showMaybe)
+    cellText = get_template('workouts/calendar_cell_text.html').render(Context({'workout': w}))
     ret = {"confirmed": ",".join(confirmed),
            "interested": ",".join(interested),
            "showJoin": showJoin,
            "showMaybe": showMaybe,
-           "showDrop": showDrop}
+           "showDrop": showDrop,
+           "cellText": cellText}
     return HttpResponse(json.dumps(ret), "application/javascript")
