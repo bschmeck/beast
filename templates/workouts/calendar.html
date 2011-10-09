@@ -23,6 +23,9 @@ h1 {
 .text {
   border: 1px solid #ccc;
 }
+.mine {
+  border: 1px solid #f00;
+}
 .highlight {
   background: #ff9;
   cursor: pointer;
@@ -97,13 +100,15 @@ $(".text")
   var re = /workout_(\d+)/;
   var id = re.exec(this.id)[1];
   var rowid = $(this).closest("tr").attr("id");
+  var w = this;
   $("#calendar tr").hide("blind");
   $("#" + rowid).show("blind", function() {  
     $("#workout_desc").load("/workout/" + id + "/", function() {
       $("#workout").show("blind");
       $(".workout_action").click(function(event) {
         event.preventDefault();
-        $.post("/workout/" + id + "/action/", {"action": event.target.id}, function(data) {
+        var action = event.target.id;
+        $.post("/workout/" + id + "/action/", {"action": action}, function(data) {
           $("#confirmed").text(data.confirmed);
           $("#interested").text(data.interested);
           $("#join, #maybe, #drop").attr("disabled", "disabled");
@@ -115,6 +120,11 @@ $(".text")
           }
           if (data.showDrop) {
             $("#drop").removeAttr("disabled");
+          }
+          if (action === "join" || action === "maybe") {
+            $(w).addClass("mine");
+          } else {
+            $(w).removeClass("mine");
           }
           }, "json");
       });

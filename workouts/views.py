@@ -61,8 +61,8 @@ class CalendarDay:
         self.dte = dte
         self.workouts = []
 
-    def addWorkout(self, w):
-        self.workouts.append(w)
+    def addWorkout(self, w, highlight):
+        self.workouts.append((w, highlight))
 
     def dateStr(self):
         return datetime.strftime(self.dte, "%m/%d")
@@ -81,7 +81,11 @@ def calendar(request):
         while True:
             c = CalendarDay(d)
             for workout in Workout.objects.filter(startDate=d):
-                c.addWorkout(workout)
+                if request.user.is_authenticated():
+                    highlight = request.user in workout.confirmed.all() or request.user in workout.interested.all()
+                else:
+                    highlight = False
+                c.addWorkout(workout, highlight)
             w.append(c)
             d += t
             if d.weekday() == 6:

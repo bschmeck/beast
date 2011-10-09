@@ -1,7 +1,11 @@
 <div class="cell">
   <div class="date">{{day.dateStr}}</div>
-  {% for workout in day.workouts %}
-    <div class="text" id="workout_{{workout.id}}">
+  {% for workout, mine in day.workouts %}
+    {% if mine %}
+      <div class="text mine" id="workout_{{workout.id}}">
+    {% else %}
+      <div class="text" id="workout_{{workout.id}}">
+    {% endif %}
       {{workout.startTime}}<br>
       {{workout.title}}<br>
     </div>
