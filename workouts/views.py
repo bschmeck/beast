@@ -3,10 +3,12 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
 from datetime import datetime, timedelta
+import json
 
 from models import UserProfile, Workout
 
@@ -93,8 +95,49 @@ def workout(request, w_id):
     w = get_object_or_404(Workout, pk=w_id)
     confirmed = map(lambda u: u.get_profile().displayName, w.confirmed.all())
     interested = map(lambda u: u.get_profile().displayName, w.interested.all())
+    if request.user.is_authenticated:
+        showJoin = not request.user in w.confirmed.all()
+        showMaybe = not request.user in w.interested.all()
+        showDrop = not (showJoin and showMaybe)
+    else:
+        showJoin = False
+        showMaybe = False
+        showDrop = False
     return render_to_response('workouts/workout.html',
                               {'workout': w,
                                'confirmed': confirmed,
-                               'interested': interested},
+                               'interested': interested,
+                               'showJoin': showJoin,
+                               'showMaybe': showMaybe,
+                               'showDrop': showDrop},
                               context_instance=RequestContext(request))
+
+@login_required
+def joinWorkout(request, w_id):
+    w = get_object_or_404(Workout, pk=w_id)
+    try:
+        action = request.POST["action"]
+    except KeyError:
+        return HttpResponseBadRequest("Missing argument")
+
+    if action == "join":
+        request.user.confirmed_workouts.add(w)
+        request.user.possible_workouts.remove(w)
+    elif action == "maybe":
+        request.user.confirmed_workouts.remove(w)
+        request.user.possible_workouts.add(w)
+    else:
+        request.user.confirmed_workouts.remove(w)
+        request.user.possible_workouts.remove(w)
+    
+    confirmed = map(lambda u: u.get_profile().displayName, w.confirmed.all())
+    interested = map(lambda u: u.get_profile().displayName, w.interested.all())
+    showJoin = not request.user in w.confirmed.all()
+    showMaybe = not request.user in w.interested.all()
+    showDrop = not (showJoin and showMaybe)
+    ret = {"confirmed": ",".join(confirmed),
+           "interested": ",".join(interested),
+           "showJoin": showJoin,
+           "showMaybe": showMaybe,
+           "showDrop": showDrop}
+    return HttpResponse(json.dumps(ret), "application/javascript")

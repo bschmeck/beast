@@ -8,7 +8,13 @@
 {% endif %}
 <tr><td class="desc">Description</td><td>{{workout.description|linebreaksbr}}</td></tr>
 <tr><td class="desc">Organizer</td><td>{{workout.organizer.get_profile.displayName}} ({{workout.organizer.email}})</td></tr>
-<tr><td class="desc">Confirmed</td><td>{% for u in confirmed %} {{u}}, {% endfor %}</td></tr>
-<tr><td class="desc">Interested</td><td>{% for u in vinterested %} {{u}}, {% endfor %}</td></tr>
+<tr><td class="desc">Confirmed</td><td id="confirmed">{% for u in confirmed %} {{u}}, {% endfor %}</td></tr>
+<tr><td class="desc">Interested</td><td id="interested">{% for u in interested %} {{u}}, {% endfor %}</td></tr>
 </table>
+
+{% if user.is_authenticated %}
+  <button id="join" class="workout_action" {% if not showJoin %}disabled{% endif %}>Join</button>
+  <button id="maybe" class="workout_action" {% if not showMaybe %}disabled{% endif %}>Maybe</button>
+  <button id="drop" class="workout_action" {% if not showDrop %}disabled{% endif %}>Drop Out</button>
+{% endif %}
 
