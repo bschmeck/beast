@@ -22,7 +22,7 @@ class Tag(models.Model):
     text = models.CharField(max_length=50)
     
     def __unicode__(self):
-        return text
+        return self.text
 
 class UserProfile(models.Model):
     notify = models.BooleanField(default=True)
