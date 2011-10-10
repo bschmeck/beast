@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>Workout Creation</title>
+<link type="text/css" href="{{ STATIC_URL }}css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript">
+$(function() {
+  $(".datePicker").datepicker({
+    onClose: function(dateText, inst) {
+      /* Just hardcode this for now.  Could be more elegant. */
+      $("#id_startTime").focus();
+    }
+  });
+  $("input[type='text']:first").focus();
+});
+</script>
+</head>
+<body>
+<form action="/workout/create/" method="post">
+{% csrf_token %}
+<table>
+{{ form.as_table }}
+</table>
+<input type="submit" value="Submit" />
+</form>
+</body>
+</html>

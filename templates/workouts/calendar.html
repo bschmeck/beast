@@ -151,7 +151,7 @@ $("#workout").hide();
 <h1>B.E.A.S.T.</h1>
 <div class="userInfo">
 {% if user.is_authenticated %}
-  <p>Logged in as {{user.email}} | <a href="/account/logout">Log Out</a></p>
+  <p>Logged in as {{user.email}} | <a href="/workout/create">Create Workout</a> | <a href="/account/logout">Log Out</a></p>
 {% else %}
   <p><a href="/account/login">Log In</a> | <a href="/account/register">Join</a></p>
 {% endif %}

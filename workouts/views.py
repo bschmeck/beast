@@ -3,7 +3,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import Context, RequestContext
 from django.template.loader import get_template
@@ -11,7 +11,26 @@ from django.template.loader import get_template
 from datetime import datetime, timedelta
 import json
 
+from forms import WorkoutForm
 from models import UserProfile, Workout
+
+@login_required
+def createWorkout(request):
+    if request.method == 'POST':
+        form = WorkoutForm(request.POST)
+        if form.is_valid():
+            # We need to set organizer manually.  If we don't set commit=False
+            # the save will fail since organizer isn't set.
+            workout = form.save(commit=False)
+            workout.organizer = request.user
+            workout.save()
+            return HttpResponseRedirect("/")
+    else:
+        form = WorkoutForm()
+
+    return render_to_response('workouts/create.html',
+                              {'form': form,},
+                              context_instance=RequestContext(request))
 
 @user_passes_test(lambda u: u.is_anonymous)
 def accountCreate(request):
