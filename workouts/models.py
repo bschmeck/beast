@@ -32,3 +32,14 @@ class UserProfile(models.Model):
 
     def __unicode__(self):
         return self.displayName
+
+class Message(models.Model):
+    MESSAGE_CHOICES = (
+        ("MAIL", "E-mail"),
+        ("CHANGE", "Change"),
+    )
+    msgType = models.CharField(max_length=10, choices=MESSAGE_CHOICES)
+    workout = models.ForeignKey(Workout)
+    text = models.TextField()
+    sender = models.ForeignKey(User, blank=True, null=True)
+    msgDate = models.DateTimeField()
