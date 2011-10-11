@@ -16,16 +16,16 @@ class Command(BaseCommand):
         action = opStr.split("[BEAST] ")[1].lower()
         changeStr = None
         if action == "join":
-            request.user.confirmed_workouts.add(workout)
-            request.user.possible_workouts.remove(workout)
+            user.confirmed_workouts.add(workout)
+            user.possible_workouts.remove(workout)
             changeStr = "%s joined the workout" % user.email
         elif action == "maybe":
-            request.user.confirmed_workouts.remove(workout)
-            request.user.possible_workouts.add(workout)
+            user.confirmed_workouts.remove(workout)
+            user.possible_workouts.add(workout)
             changeStr = "%s is a maybe for the workout" % user.email
         elif action == "drop":
-            request.user.confirmed_workouts.remove(workout)
-            request.user.possible_workouts.remove(workout)
+            user.confirmed_workouts.remove(workout)
+            user.possible_workouts.remove(workout)
             changeStr = "%s dropped the workout" % user.email
 
         if changeStr:
@@ -48,7 +48,8 @@ class Command(BaseCommand):
         except Workout.DoesNotExist:
             raise CommandError("Unable to find workout with id %d" % w_id)
         try:
-            user = User.objects.get(email=msg['From'])
+            fromAddr = email.utils.parseaddr(msg['From'])[1]
+            user = User.objects.get(email=fromAddr)
         except User.DoesNotExist:
             user = None
 
