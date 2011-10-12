@@ -183,3 +183,6 @@ def joinWorkout(request, w_id):
            "showDrop": showDrop,
            "cellText": cellText}
     return HttpResponse(json.dumps(ret), "application/javascript")
+
+def faq(request):
+    return render_to_response('workouts/faq.html', {})

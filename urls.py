@@ -23,5 +23,5 @@ urlpatterns = patterns(
     (r'^account/password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm', {'post_reset_redirect': '/account/password/done/'}),
     (r'^account/password/done/$', 'django.contrib.auth.views.password_reset_complete'),
     (r'^account/register/$', 'workouts.views.accountCreate'),
-
+    (r'^faq$', 'workouts.views.faq'),
 )
