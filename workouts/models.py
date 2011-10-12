@@ -18,6 +18,12 @@ class Workout(models.Model):
     def __unicode__(self):
         return str(self.startDate) + " - " + self.title
 
+    def startDateStr(self):
+        return date.strftime(self.startDate, "%m/%d/%Y")
+
+    def addr(self):
+        return "beast+%s@beast.shmk.org" % (str(self.pk))
+
 class Tag(models.Model):
     text = models.CharField(max_length=50)
     

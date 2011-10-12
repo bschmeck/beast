@@ -1,0 +1,24 @@
+{{workout.organizer.get_profile.displayName}} has created a new workout on BEAST for {{workout.startDateStr}}.
+
+About this workout:
+
+----
+Title: {{workout.title}}
+Date: {{workout.startDateStr}}
+"Go" Time: {{workout.startTime}}
+Warmup: {% firstof workout.warmupTime "None" %}
+Description: {{workout.description}}
+----
+
+You can join this workout via the BEAST system at {{url}}.
+
+Alternatively, you can join this workout by replying to this email and using BEAST commands:  
+* To sign up, use the command "join".  
+* To drop out later, use the command "drop".  
+* If you're unsure, use the command "maybe".  
+
+Each BEAST command must be on a separate line and the line must begin with [BEAST].  For a full description of BEAST commands, see {{command_url}}.
+
+Mail sent to this address ({{workout.addr}}) will be automatically forwarded to all confirmed and possible runners.
+
+BEAST

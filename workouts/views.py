@@ -14,6 +14,20 @@ import json
 from forms import WorkoutForm
 from models import UserProfile, Workout
 
+def workoutNotify(workout):
+    toAddrs = map(lambda u: u.user.email, UserProfile.objects.filter(notify=True))
+    subj = "BEAST Workout Created -- %s -- %s" % (workout.title, str(workout.startDate))
+    fromAddr = workout.addr()
+    msg = get_template('workouts/workout_notify.email').render(Context({
+                'workout': workout,
+                'url': 'http://beast.shmk.org',
+                'command_url': 'http://beast.shmk.org/faq/commands',
+                }))
+    messages = []
+    messages.append(mail.EmailMessage(subj, msg, fromAddr, toAddrs))
+    conn = mail.get_connection()
+    conn.send_messages(messages)
+    
 @login_required
 def createWorkout(request):
     if request.method == 'POST':
@@ -24,6 +38,8 @@ def createWorkout(request):
             workout = form.save(commit=False)
             workout.organizer = request.user
             workout.save()
+
+            workoutNotify(workout)
             return HttpResponseRedirect("/")
     else:
         form = WorkoutForm()
