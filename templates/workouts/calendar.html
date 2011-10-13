@@ -99,10 +99,9 @@ $(function() {
 
 $(".text")
 .bind("mouseover mouseout", function(event) {
-  $(this).toggleClass("highlight");
+  $(this).toggleClass("highlight", event.type === "mouseover");
 })
 .click(function() {
-  $(this).toggleClass("highlight", false);
   var re = /workout_(\d+)/;
   var id = re.exec(this.id)[1];
   var rowid = $(this).closest(".row").attr("id");
