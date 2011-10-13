@@ -13,8 +13,9 @@ urlpatterns = patterns(
     
     # Examples:
     url(r'^$', 'workouts.views.calendar'),
-    url(r'^workout/(?P<w_id>\d+)/$', 'workouts.views.workout'),
+    url(r'^workout/(?P<w_id>\d+)/$', 'workouts.views.getWorkout'),
     url(r'^workout/(?P<w_id>\d+)/action/$', 'workouts.views.joinWorkout'),
+    url(r'^workout/(?P<w_id>\d+)/update/$', 'workouts.views.updateWorkout'),
     url(r'^workout/create/$', 'workouts.views.createWorkout'),
     (r'^account/login/$', 'django.contrib.auth.views.login'),
     (r'^account/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),

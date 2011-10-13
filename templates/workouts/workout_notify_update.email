@@ -1,0 +1,20 @@
+{{changeMsg.sender.get_profile.displayName}} has updated the workout "{{workout.title}}" on BEAST for {{workout.startDateStr}}.
+
+This change occurred at {{changeMsg.msgDate}}.  The details of the change are below.
+
+----
+{{changeMsg.text}}
+----
+
+Using the BEAST system at {{url}} you can view this workout's full details and change your plans for this workout, if necessary.
+
+Alternatively, you can change your plans for this workout by replying to this email and using BEAST commands:  
+* To sign up, use the command "join".  
+* To drop out later, use the command "drop".  
+* If you're unsure, use the command "maybe".  
+
+Each BEAST command must be on a separate line and the line must begin with [BEAST].  For a full description of BEAST commands, see {{command_url}}.
+
+Mail sent to this address ({{workout.addr}}) will be automatically forwarded to all confirmed and possible runners.
+
+BEAST

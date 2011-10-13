@@ -18,3 +18,7 @@
   <button id="drop" class="workout_action" {% if not showDrop %}disabled{% endif %}>Drop Out</button>
 {% endif %}
 
+<br>
+{% if canUpdate %}
+<a href="/workout/{{workout.pk}}/update/">Modify this Workout</a>
+{% endif %}
