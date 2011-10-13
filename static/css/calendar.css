@@ -1,0 +1,52 @@
+h1 {
+  font-family: 'Michroma', Aria, serif; font-weight: 400;
+  font-size: 48px;
+  text-align: center;
+}
+.row {
+  position: relative;
+}
+.cell {
+  width: 14%;
+  min-height: 150px;
+  float: left;
+}
+.date {
+  background: #5882fa;
+  font-size: 1.2em;
+  color: #fff;
+  text-align: center;
+}
+.text {
+  border: 1px solid #ccc;
+}
+.mine {
+  border: 1px solid #f00;
+}
+.highlight {
+  background: #ff9;
+  cursor: pointer;
+}
+.clear {
+  clear: both;
+}
+#workout {
+  border: 1px solid #ccc;
+}
+.default {
+  background: #e6e6e6;
+}
+#workout_close {
+  text-align: center;
+}
+#workout td, #workout th {
+  padding: 6px 11px;
+  border-bottom: 1px solid #95bce2;
+  vertical-align: top;
+}
+#workout .desc {
+  background: #95bce2;
+}
+#workout th, .userInfo {
+  text-align: center;
+}
