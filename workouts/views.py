@@ -117,7 +117,7 @@ def calendar(request):
         w = []
         while True:
             c = CalendarDay(d)
-            for workout in Workout.objects.filter(startDate=d):
+            for workout in Workout.objects.filter(startDate=d).order_by("startTime"):
                 if request.user.is_authenticated():
                     highlight = request.user in workout.confirmed.all() or request.user in workout.interested.all()
                 else:
