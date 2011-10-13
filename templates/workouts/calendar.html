@@ -10,9 +10,13 @@ h1 {
   font-size: 48px;
   text-align: center;
 }
+.row {
+  position: relative;
+}
 .cell {
-  min-width: 100px;
+  width: 14%;
   min-height: 150px;
+  float: left;
 }
 .date {
   background: #5882fa;
@@ -29,6 +33,9 @@ h1 {
 .highlight {
   background: #ff9;
   cursor: pointer;
+}
+.clear {
+  clear: both;
 }
 #workout {
   border: 1px solid #ccc;
@@ -90,7 +97,6 @@ $(function() {
         }
     });
 
-
 $(".text")
 .bind("mouseover mouseout", function(event) {
   $(this).toggleClass("highlight");
@@ -99,44 +105,43 @@ $(".text")
   $(this).toggleClass("highlight", false);
   var re = /workout_(\d+)/;
   var id = re.exec(this.id)[1];
-  var rowid = $(this).closest("tr").attr("id");
+  var rowid = $(this).closest(".row").attr("id");
   var w = this;
-  $("#calendar tr").hide("blind");
-  $("#" + rowid).show("blind", function() {  
-    $("#workout_desc").load("/workout/" + id + "/", function() {
-      $("#workout").show("blind");
-      $(".workout_action").click(function(event) {
-        event.preventDefault();
-        var action = event.target.id;
-        $.post("/workout/" + id + "/action/", {"action": action}, function(data) {
-          $("#confirmed").text(data.confirmed);
-          $("#interested").text(data.interested);
-          $("#join, #maybe, #drop").attr("disabled", "disabled");
-          if (data.showJoin) {
-            $("#join").removeAttr("disabled");
-          }
-          if (data.showMaybe) {
-            $("#maybe").removeAttr("disabled");
-          }
-          if (data.showDrop) {
-            $("#drop").removeAttr("disabled");
-          }
-          if (action === "join" || action === "maybe") {
-            $(w).addClass("mine");
-          } else {
-            $(w).removeClass("mine");
-          }
-          $(w).html(data.cellText);
-          }, "json");
-      });
+  $(".row").filter(":not(#" + rowid + ")").filter(":visible").hide("blind", "slow");
+  var rows = $(".row").filter(":not(#" + rowid + ")");
+  $("#workout_desc").load("/workout/" + id + "/", function() {
+    $("#workout:hidden").show("blind", "slow");
+    $(".workout_action").click(function(event) {
+      event.preventDefault();
+      var action = event.target.id;
+      $.post("/workout/" + id + "/action/", {"action": action}, function(data) {
+        $("#confirmed").text(data.confirmed);
+        $("#interested").text(data.interested);
+        $("#join, #maybe, #drop").attr("disabled", "disabled");
+        if (data.showJoin) {
+          $("#join").removeAttr("disabled");
+        }
+        if (data.showMaybe) {
+          $("#maybe").removeAttr("disabled");
+        }
+        if (data.showDrop) {
+          $("#drop").removeAttr("disabled");
+        }
+        if (action === "join" || action === "maybe") {
+          $(w).addClass("mine");
+        } else {
+          $(w).removeClass("mine");
+        }
+        $(w).html(data.cellText);
+      }, "json");
     });
   });
 });
 $("#workout_close").click(function() {
   $(this).toggleClass("highlight", false);
   $(this).toggleClass("default", true);
-  $("#workout").hide("blind", function() {
-    $("tr").show("blind");
+  $("#workout").hide("blind", "slow", function() {
+    $(".row").filter(":hidden").show("blind", "slow");
   });
   return false;
 })
@@ -156,15 +161,15 @@ $("#workout").hide();
   <p><a href="/account/login">Log In</a> | <a href="/account/register">Join</a> | <a href="/faq">FAQ</a></p>
 {% endif %}
 </div>
-<table id="calendar" width=100% cellspacing=0 cellpadding=0>
 {% for week in weeks %}
-  <tr id="week_{{forloop.counter}}">
+<div class="row" id="week_{{forloop.counter}}">
   {% for day in week %}
-    <td>{% include "workouts/calendar_cell.html" %}</td>
+    {% include "workouts/calendar_cell.html" %}
   {% endfor %}
-  </tr>
+  <div class="clear"></div>
+</div>
 {% endfor %}
-</table>
+
 <div id="workout">
 <div id="workout_close" class="default">Close</div>
 <div id="workout_desc"></div>
