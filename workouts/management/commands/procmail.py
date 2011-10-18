@@ -21,15 +21,15 @@ class Command(BaseCommand):
         if action == "join":
             user.confirmed_workouts.add(workout)
             user.possible_workouts.remove(workout)
-            changeStr = "%s joined the workout" % user.email
+            changeStr = "%s joined the workout" % user.get_profile().displayName
         elif action == "maybe":
             user.confirmed_workouts.remove(workout)
             user.possible_workouts.add(workout)
-            changeStr = "%s is a maybe for the workout" % user.email
+            changeStr = "%s is a maybe for the workout" % user.get_profile().displayName
         elif action == "drop":
             user.confirmed_workouts.remove(workout)
             user.possible_workouts.remove(workout)
-            changeStr = "%s dropped the workout" % user.email
+            changeStr = "%s dropped the workout" % user.get_profile().displayName
 
         if changeStr:
             m = Message(msgType="CHANGE", workout=workout, text=changeStr, sender=user, msgDate=datetime.now())
