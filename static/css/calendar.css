@@ -50,3 +50,16 @@ h1 {
 #workout th, .userInfo {
   text-align: center;
 }
+#workoutDetails {
+  float: left;
+  width: 50%;
+}
+#workoutMessages {
+  float: left;
+  width: 50%;
+}
+.msg {
+  margin: 10px;
+  padding: 5px 10px;
+  background: #dfdfdf;
+}

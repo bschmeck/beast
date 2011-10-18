@@ -1,3 +1,4 @@
+<div id="workoutDetails">
 <table>
 <tr><th class="desc" colspan=2>{{workout.title}}</th></tr>
 <tr><td class="desc">Date</td><td>{{workout.startDate}}</td></tr>
@@ -22,3 +23,14 @@
 {% if canUpdate %}
 <a href="/workout/{{workout.pk}}/update/">Modify this Workout</a>
 {% endif %}
+</div>
+<div id="workoutMessages">
+{% for msg in messages %}
+<div class="msg">
+{{msg.get_msgType_display}} from {{msg.sender.get_profile.displayName}}<br>
+{{msg.msgDate}}<br>
+------<br>
+{{msg.text|linebreaksbr}}
+</div>
+{% endfor %}
+</div>

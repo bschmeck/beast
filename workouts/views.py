@@ -210,6 +210,7 @@ def getWorkout(request, w_id):
     w = get_object_or_404(Workout, pk=w_id)
     confirmed = map(lambda u: u.get_profile().displayName, w.confirmed.all())
     interested = map(lambda u: u.get_profile().displayName, w.interested.all())
+    messages = w.message_set.all().order_by("-msgDate")
     if request.user.is_authenticated:
         showJoin = not request.user in w.confirmed.all()
         showMaybe = not request.user in w.interested.all()
@@ -227,7 +228,8 @@ def getWorkout(request, w_id):
                                'showJoin': showJoin,
                                'showMaybe': showMaybe,
                                'showDrop': showDrop,
-                               'canUpdate': canUpdate},
+                               'canUpdate': canUpdate,
+                               'messages': messages},
                               context_instance=RequestContext(request))
 
 @login_required
