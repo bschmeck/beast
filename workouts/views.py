@@ -43,7 +43,7 @@ def workoutNotify(workout, changeMsg=None):
     conn.send_messages(messages)
 
 def genChangeText(field, old, new):
-    return '%s changed from %s to %s\n' % (field, old, new)
+    return '%s changed from:\n%s\nto:\n%s\n' % (field, old, new)
 
 def dateStr(d):
     return date.strftime(d, "%m/%d/%Y")

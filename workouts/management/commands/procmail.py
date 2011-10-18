@@ -73,17 +73,20 @@ class Command(BaseCommand):
         
         # Process the body of the message, looking for beast commands
         # Only do this if the user exists
+        foundOp = False
         if user and body:
             for line in body.splitlines():
                 if line.startswith("[BEAST] "):
                     self.beastOp(workout, user, line)
+                    foundOp = True
+        
         if body:
             msgText = body
         else:
             msgText = html
 
-        # Save the message, if we know the sender
-        if user:
+        # Save the message, if we know the sender and it wasn't a BeastOp email
+        if user and not foundOp:
             m = Message(msgType="MAIL", workout=workout, text=msgText, sender=user, msgDate=datetime.now())
             m.save()
 
