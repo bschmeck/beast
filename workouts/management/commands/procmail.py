@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User
 from django.core import mail
 from django.core.management.base import BaseCommand, CommandError
+from django.template import Context
+from django.template.loader import get_template
+
 from beast.workouts.models import Message, Workout
 
 from datetime import datetime
@@ -79,9 +82,10 @@ class Command(BaseCommand):
         else:
             msgText = html
 
-        # Save the message
-        m = Message(msgType="MAIL", workout=workout, text=msgText, sender=user, msgDate=datetime.now())
-        m.save()
+        # Save the message, if we know the sender
+        if user:
+            m = Message(msgType="MAIL", workout=workout, text=msgText, sender=user, msgDate=datetime.now())
+            m.save()
 
         # Finally, forward it on to everyone signed up for the workout
         subj = "Message About Workout %s on %s" % (workout.title, str(workout.startDate))
@@ -91,7 +95,9 @@ class Command(BaseCommand):
             toAddrs.append(u.email)
         for u in workout.interested.all():
             toAddrs.append(u.email)
-
+        body = get_template('workouts/workout_notify_msg.email').render(Context({'msgDate': msg.msgDate,
+                                                                                 'sender': user if user else fromAddr,
+                                                                                 'msgText': msgText}))
         conn = mail.get_connection()
         messages = []
         messages.append(mail.EmailMessage(subj, msgText, fromAddr, toAddrs))
