@@ -27,7 +27,7 @@ def workoutNotify(workout, changeMsg=None):
                     'command_url': 'http://beast.shmk.org/faq/commands',
                     }))
     else:
-        toAddrs = map(lambda u: u.user.email, UserProfile.objects.filter(notify=True))
+        toAddrs = UserProfile.objects.filter(notify=True).values_list('user__email', flat=True)
         action = "Created"
         msg = get_template('workouts/workout_notify_create.email').render(Context({
                     'workout': workout,

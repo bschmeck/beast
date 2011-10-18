@@ -90,11 +90,7 @@ class Command(BaseCommand):
         # Finally, forward it on to everyone signed up for the workout
         subj = "Message About Workout %s on %s" % (workout.title, str(workout.startDate))
         fromAddr = msg['To']
-        toAddrs = []
-        for u in workout.confirmed.all():
-            toAddrs.append(u.email)
-        for u in workout.interested.all():
-            toAddrs.append(u.email)
+        toAddrs = workout.confirmed.values_list('email', flat=True) | workout.interested.values_list('email', flat=True)
         body = get_template('workouts/workout_notify_msg.email').render(Context({'msgDate': msg.msgDate,
                                                                                  'sender': user if user else fromAddr,
                                                                                  'msgText': msgText}))
