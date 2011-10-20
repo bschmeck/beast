@@ -32,6 +32,14 @@ class RegistrationForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput, label='Password')
     password1 = forms.CharField(widget=forms.PasswordInput, label='Re-Enter Password')
     displayName = forms.CharField(max_length=30, label='Name To Display')
+    weekStart = forms.ChoiceField(choices=((6, 'Sunday'),
+                                           (0, "Monday"),
+                                           (1, "Tuesday"),
+                                           (2, "Wednesday"),
+                                           (3, "Thursday"),
+                                           (4, "Friday"),
+                                           (5, "Saturday")), label='First Day Of The Week')
+                                           
     notify = forms.BooleanField(required=False, initial=True, label='Notify Me Of New Workouts')
 
     def clean_email(self):

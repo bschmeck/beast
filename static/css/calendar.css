@@ -17,6 +17,14 @@ h1 {
   color: #fff;
   text-align: center;
 }
+.dayOfWeek {
+  width: 14%;
+  float: left;
+  background: #5882fa;
+  font-size: 1.2em;
+  color: #fff;
+  text-align: center;
+}
 .text {
   border: 1px solid #ccc;
 }

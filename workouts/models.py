@@ -33,7 +33,7 @@ class Tag(models.Model):
 class UserProfile(models.Model):
     notify = models.BooleanField(default=True)
     displayName = models.CharField(max_length=50)
-
+    weekStart = models.IntegerField()
     user = models.OneToOneField(User)
 
     def __unicode__(self):

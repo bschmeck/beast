@@ -14,6 +14,7 @@ from datetime import date, datetime, time, timedelta
 import json
 import random
 import string
+import sys
 
 from forms import RegistrationForm, WorkoutForm
 from models import Message, UserProfile, Workout
@@ -134,6 +135,7 @@ def accountCreate(request):
             pwd = form.cleaned_data['password']
             displayName = form.cleaned_data['displayName']
             notify = form.cleaned_data['notify']
+            weekStart = form.cleaned_data['weekStart']
 
             with transaction.commit_on_success():
                 username = genUserName()
@@ -146,6 +148,7 @@ def accountCreate(request):
                 profile.user = new_user
                 profile.displayName = displayName
                 profile.notify = notify
+                profile.weekStart = weekStart
                 profile.save()
 
             user = auth.authenticate(username=username, password=pwd)
@@ -179,17 +182,29 @@ class CalendarDay:
         return datetime.strftime(self.dte, "%m/%d")
 
 def calendar(request):
+    if request.user.is_authenticated():
+        weekStart = request.user.get_profile().weekStart
+    else:
+        weekStart = 6
+
     d = datetime.now().date()
     # weekday() gives Monday as 0, Sunday as 6
-    # Subtracting weekday()+1 gives us a Sunday
-    if d.weekday() != 6:
-        d -= timedelta(days=d.weekday()+1)
+    # Back up the correct number of days to reach the start day
+    adj = ((d.weekday() - weekStart) + 7) % 7
+    d -= timedelta(days=adj)
+    # Back up a day at a time until we hit the correct start day
+    #while d.weekday() != weekStart:
+    #    d -= timedelta(days=1)
 
+    days = []
+    daysDone = False
     ret = []
     t = timedelta(days=1)
     for i in range(4):
         w = []
         while True:
+            if not daysDone:
+                days.append(d.strftime('%A'))
             c = CalendarDay(d)
             for workout in Workout.objects.filter(startDate=d).order_by("startTime"):
                 if request.user.is_authenticated():
@@ -199,11 +214,13 @@ def calendar(request):
                 c.addWorkout(workout, highlight)
             w.append(c)
             d += t
-            if d.weekday() == 6:
+            if d.weekday() == weekStart:
+                daysDone = True
                 break
         ret.append(w)
     return render_to_response('workouts/calendar.html',
-                              {'weeks': ret},
+                              {'days': days,
+                               'weeks': ret},
                               context_instance=RequestContext(request))
 
 def getWorkout(request, w_id):

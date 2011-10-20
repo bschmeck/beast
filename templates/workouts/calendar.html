@@ -21,6 +21,12 @@ $(function() {
   <p><a href="/account/login">Log In</a> | <a href="/account/register">Join</a> | <a href="/faq">FAQ</a></p>
 {% endif %}
 </div>
+
+{% for day in days %}
+<div class="dayOfWeek">{{day}}</div>
+{% endfor %}
+<div class="clear"></div>
+
 {% for week in weeks %}
 <div class="row" id="week_{{forloop.counter}}">
   {% for day in week %}
