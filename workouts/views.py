@@ -240,16 +240,24 @@ def joinWorkout(request, w_id):
     except KeyError:
         return HttpResponseBadRequest("Missing argument")
 
+    changeStr = None
     if action == "join":
         request.user.confirmed_workouts.add(w)
         request.user.possible_workouts.remove(w)
+        changeStr = "%s joined the workout" % request.user.get_profile().displayName
     elif action == "maybe":
         request.user.confirmed_workouts.remove(w)
         request.user.possible_workouts.add(w)
+        changeStr = "%s is a maybe for the workout" % request.user.get_profile().displayName
     else:
         request.user.confirmed_workouts.remove(w)
         request.user.possible_workouts.remove(w)
-    
+        changeStr = "%s dropped the workout" % request.user.get_profile().displayName
+
+    if changeStr:
+        m = Message(msgType="CHANGE", workout=w, text=changeStr, sender=request.user, msgDate=datetime.now())
+        m.save()
+
     confirmed = map(lambda u: u.get_profile().displayName, w.confirmed.all())
     interested = map(lambda u: u.get_profile().displayName, w.interested.all())
     showJoin = not request.user in w.confirmed.all()
