@@ -115,6 +115,7 @@ def createWorkout(request):
             workout = form.save(commit=False)
             workout.organizer = request.user
             workout.save()
+            request.user.confirmed_workouts.add(workout)
 
             workoutNotify(workout)
             return HttpResponseRedirect("/")
