@@ -38,6 +38,7 @@ function configAjax() {
 }
 
 function buildCalendar() {
+    configAjax();
     $(".text")
     .bind("mouseover mouseout", function(event) {
         $(this).toggleClass("highlight", event.type === "mouseover");
