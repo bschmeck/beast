@@ -67,10 +67,15 @@ function buildCalendar() {
                     if (data.showDrop) {
                         $("#drop").removeAttr("disabled");
                     }
-                    if (action === "join" || action === "maybe") {
-                        $(w).addClass("mine");
+                    if (action === "join") {
+			$(w).addClass("mine");
+			alert("You have joined this workout.");
+		    } else if (action === "maybe") {
+			$(w).addClass("mine");
+			alert("You are a 'maybe' for this workout.");                       
                     } else {
                         $(w).removeClass("mine");
+			alert("You have dropped out of this workout.");                       
                     }
                     $(w).html(data.cellText);
                 }, "json");
