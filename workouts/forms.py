@@ -23,6 +23,12 @@ class WorkoutForm(forms.ModelForm):
             'location',
             'warmupTime',
             'description']
+    startTime = forms.TimeField(input_formats=("%I:%M %p",
+                                         "%I:%M%p",
+                                         "%I %p",
+                                         "%I%p",
+                                         "%H:%M"),
+                                widget=forms.TimeInput(format='%I:%M %p'))
     class Meta:
         model = Workout
         exclude = ('organizer', 'confirmed', 'interested', 'tags')

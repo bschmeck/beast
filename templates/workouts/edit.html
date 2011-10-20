@@ -7,10 +7,10 @@
 <script type="text/javascript">
 $(function() {
   $(".datePicker").datepicker({
-    onClose: function(dateText, inst) {
+    onSelect: function(dateText, inst) {
       /* Just hardcode this for now.  Could be more elegant. */
       $("#id_startTime").focus();
-    }
+    },
   });
   $("input[type='text']:first").focus();
 });
