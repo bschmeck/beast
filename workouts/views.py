@@ -15,7 +15,7 @@ import json
 import random
 import string
 
-from forms import WorkoutForm
+from forms import RegistrationForm, WorkoutForm
 from models import Message, UserProfile, Workout
 
 def workoutNotify(workout, changeMsg=None):
@@ -128,37 +128,35 @@ def createWorkout(request):
 @user_passes_test(lambda u: u.is_anonymous)
 def accountCreate(request):
     if request.method == 'POST':
-        email = request.POST['email']
-        pwd = request.POST['password']
-        username = genUserName()
-        if User.objects.filter(email = email).exists():
-            return render_to_response('registration/register.html',
-                                      {'err_msg': "An account already exists with that email address."},
-                                      context_instance=RequestContext(request))
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            pwd = form.cleaned_data['password']
+            displayName = form.cleaned_data['displayName']
+            notify = form.cleaned_data['notify']
 
-        new_user = User.objects.create_user(username=username,
-                                            email = email,
-                                            password=pwd)
-        new_user.save()
+            with transaction.commit_on_success():
+                username = genUserName()
+                new_user = User.objects.create_user(username=username,
+                                                    email = email,
+                                                    password=pwd)
+                new_user.save()
 
-        profile = UserProfile()
-        profile.user = new_user
-        try:
-            dispName = request.POST['displayName']
-        except KeyError:
-            dispName = email
-        profile.notify = True
-        profile.save()
+                profile = UserProfile()
+                profile.user = new_user
+                profile.displayName = displayName
+                profile.notify = notify
+                profile.save()
 
-        user = auth.authenticate(username=username,
-                                 password=pwd)
-        if user and user.is_active:
-            auth.login(request, user)
-        return HttpResponseRedirect("/")
+            user = auth.authenticate(username=username, password=pwd)
+            if user and user.is_active:
+                auth.login(request, user)
+            return HttpResponseRedirect("/")
     else:
-        return render_to_response('registration/register.html',
-                                  {},
-                                  context_instance=RequestContext(request))
+        form = RegistrationForm()
+    return render_to_response('registration/register.html',
+                              {'form': form},
+                              context_instance=RequestContext(request))
 
 def genUserName():
     chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
