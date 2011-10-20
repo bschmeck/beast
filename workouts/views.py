@@ -12,6 +12,8 @@ from django.template.loader import get_template
 
 from datetime import date, datetime, time, timedelta
 import json
+import random
+import string
 
 from forms import WorkoutForm
 from models import Message, UserProfile, Workout
