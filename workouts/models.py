@@ -49,3 +49,10 @@ class Message(models.Model):
     text = models.TextField()
     sender = models.ForeignKey(User, blank=True, null=True)
     msgDate = models.DateTimeField()
+
+class Location(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.TextField()
+
+    def __unicode__(self):
+        return self.name

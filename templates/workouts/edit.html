@@ -13,6 +13,14 @@ $(function() {
     },
   });
   $("input[type='text']:first").focus();
+  $("#id_location").autocomplete({
+    source: [{{locations|safe}}],
+    minLength: 0,
+  });
+  $("#id_location").bind("focus", function(event, ui) {
+      $(this).autocomplete("search");
+  });
+
 });
 </script>
 </head>

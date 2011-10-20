@@ -17,7 +17,7 @@ import string
 import sys
 
 from forms import RegistrationForm, WorkoutForm
-from models import Message, UserProfile, Workout
+from models import Location, Message, UserProfile, Workout
 
 def workoutNotify(workout, changeMsg=None):
     if changeMsg:
@@ -99,11 +99,12 @@ def updateWorkout(request, w_id):
             
     else:
         form = WorkoutForm(instance=w)
-    
+    locations = str(','.join(map(lambda n: '"' + n + '"', Location.objects.values_list('name', flat=True))))
     return render_to_response('workouts/edit.html',
                               {'form': form,
                                'action': 'update',
-                               'w_id': w_id,},
+                               'w_id': w_id,
+                               'locations': locations},
                               context_instance=RequestContext(request))
 @login_required
 def createWorkout(request):
@@ -122,9 +123,11 @@ def createWorkout(request):
     else:
         form = WorkoutForm()
 
+    locations = str(','.join(map(lambda n: '"' + n + '"', Location.objects.values_list('name', flat=True))))
     return render_to_response('workouts/edit.html',
                               {'form': form,
-                               'action': 'create',},
+                               'action': 'create',
+                               'locations': locations},
                               context_instance=RequestContext(request))
 
 @user_passes_test(lambda u: u.is_anonymous)
