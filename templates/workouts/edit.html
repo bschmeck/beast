@@ -2,6 +2,17 @@
 <head>
 <title>Workout Creation</title>
 <link type="text/css" href="{{ STATIC_URL }}css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+<style type="text/css">
+div {
+  float: left;
+}
+#explain {
+  background: #f5f5f5;
+  width: 300px;
+  margin: 0px 25px;
+  padding: 0 15px;
+}
+</style>
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.8.16.custom.min.js"></script>
 <script type="text/javascript">
@@ -12,19 +23,40 @@ $(function() {
       $("#id_startTime").focus();
     },
   });
-  $("input[type='text']:first").focus();
   $("#id_location").autocomplete({
-    source: [{{locations|safe}}],
+    source: [{{locationStr|safe}}],
     minLength: 0,
   });
-  $("#id_location").bind("focus", function(event, ui) {
+  $("input, textarea").bind("focus", function(event, ui) {
+    var txt = "";
+    if (this.id === "id_title") {
+      txt = "<p>Give a short title to the workout.</p>";
+    } else if (this.id === "id_startDate") {
+      txt = "<p>Set the date for this workout.</p>";
+    } else if (this.id === "id_startTime") {
+      txt = "<p>Set the time when the workout will start (the 'go' time.)</p>";
+    } else if (this.id === "id_location") {
+      txt = "<p>Set the location for the workout.  You can choose from one of the standard locations or specify one of your own.</p>";
+      txt += "<p>The standard location choices are:</p>";
+      txt += "<ul>";
+      {% for loc in locations %}
+        txt += "<b><li>{{loc.name}}</li></b>{{loc.description}}";
+      {% endfor %}
       $(this).autocomplete("search");
+    } else if (this.id === "id_warmupTime") {
+      txt = "<p>Set the time when the warmup for the workout will start.</p>";
+      txt += '<p style="color: #c00;">This is optional.</p>';
+    } else if (this.id === "id_description") {
+      txt = "<p>Set any details related to this workout, such as pacing, route, etc.</p>";
+    }
+    $("#explain").html(txt);
   });
-
+  $("input[type='text']:first").focus();
 });
 </script>
 </head>
 <body>
+<div>
 {% if action == "update" %}
 <form action="/workout/{{w_id}}/update/" method="post">
 {% else %}
@@ -36,5 +68,9 @@ $(function() {
 </table>
 <input type="submit" value="Submit" /> <a href="/">Cancel</a>
 </form>
+</div>
+<div id="explain">
+
+</div>
 </body>
 </html>
