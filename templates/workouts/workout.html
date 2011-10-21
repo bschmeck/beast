@@ -3,7 +3,15 @@
 <tr><th class="desc" colspan=2>{{workout.title}}</th></tr>
 <tr><td class="desc">Date</td><td>{{workout.startDate}}</td></tr>
 <tr><td class="desc">"Go" time</td><td>{{workout.startTime}}</td></tr>
-<tr><td class="desc">Location</td><td>{{workout.location}}</td></tr>
+<tr><td class="desc">Location</td><td>
+{% if locText %}
+  <a href="#" onClick='alert("{{locText}}"); return false;'>
+{% endif %}
+{{workout.location}}
+{% if locText %}
+  </a>
+{% endif %}
+</td></tr>
 {% if workout.warmupTime %}
   <tr><td class="desc">Warmup</td><td>{{workout.warmupTime}}</td></tr>
 {% endif %}

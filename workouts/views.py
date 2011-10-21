@@ -236,6 +236,12 @@ def getWorkout(request, w_id):
     confirmed = map(lambda u: u.get_profile().displayName, w.confirmed.all())
     interested = map(lambda u: u.get_profile().displayName, w.interested.all())
     messages = w.message_set.all().order_by("-msgDate")
+    try:
+        loc = Location.objects.get(name=w.location)
+        locText = loc.description
+    except Location.DoesNotExist:
+        locText = None
+
     if request.user.is_authenticated:
         showJoin = not request.user in w.confirmed.all()
         showMaybe = not request.user in w.interested.all()
@@ -246,6 +252,7 @@ def getWorkout(request, w_id):
         showMaybe = False
         showDrop = False
         canUpdate = False
+
     return render_to_response('workouts/workout.html',
                               {'workout': w,
                                'confirmed': confirmed,
@@ -254,7 +261,8 @@ def getWorkout(request, w_id):
                                'showMaybe': showMaybe,
                                'showDrop': showDrop,
                                'canUpdate': canUpdate,
-                               'messages': messages},
+                               'messages': messages,
+                               'locText': locText},
                               context_instance=RequestContext(request))
 
 @login_required
