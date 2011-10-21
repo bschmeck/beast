@@ -34,7 +34,8 @@ class WorkoutForm(forms.ModelForm):
                                          "%I %p",
                                          "%I%p",
                                          "%H:%M"),
-                                widget=forms.TimeInput(format='%I:%M %p'))
+                                 widget=forms.TimeInput(format='%I:%M %p'),
+                                 required=False)
     class Meta:
         model = Workout
         exclude = ('organizer', 'confirmed', 'interested', 'tags')
