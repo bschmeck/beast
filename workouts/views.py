@@ -99,7 +99,7 @@ def updateWorkout(request, w_id):
             
     else:
         form = WorkoutForm(instance=w)
-    locations = str(','.join(map(lambda n: '"' + n + '"', Location.objects.values_list('name', flat=True))))
+    locations = str(','.join(map(lambda n: '"' + n + '"', Location.objects.order_by('name').values_list('name', flat=True))))
     return render_to_response('workouts/edit.html',
                               {'form': form,
                                'action': 'update',
@@ -123,7 +123,7 @@ def createWorkout(request):
     else:
         form = WorkoutForm()
 
-    locations = str(','.join(map(lambda n: '"' + n + '"', Location.objects.values_list('name', flat=True))))
+    locations = str(','.join(map(lambda n: '"' + n + '"', Location.objects.order_by('name').values_list('name', flat=True))))
     return render_to_response('workouts/edit.html',
                               {'form': form,
                                'action': 'create',
