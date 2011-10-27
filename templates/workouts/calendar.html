@@ -13,20 +13,26 @@ $(function() {
 </script>
 </head>
 <body>
-<h1>B.E.A.S.T.</h1>
-<div class="userInfo">
+<div id="header-wrap">
+ <div id="header-container">
+  <div id="header">
+   <h1>B.E.A.S.T.</h1>
+   <div class="userInfo">
 {% if user.is_authenticated %}
-  <p>Logged in as {{user.email}} | <a href="/workout/create">Create Workout</a> | <a href="/faq">FAQ</a> | <a href="/account/logout">Log Out</a></p>
+    <p>Logged in as {{user.email}} | <a href="/workout/create">Create Workout</a> | <a href="/faq">FAQ</a> | <a href="/account/logout">Log Out</a></p>
 {% else %}
-  <p><a href="/account/login">Log In</a> | <a href="/account/register">Join</a> | <a href="/faq">FAQ</a></p>
+    <p><a href="/account/login">Log In</a> | <a href="/account/register">Join</a> | <a href="/faq">FAQ</a></p>
 {% endif %}
-</div>
+   </div>
 
 {% for day in days %}
-<div class="dayOfWeek">{{day}}</div>
+   <div class="dayOfWeek">{{day}}</div>
 {% endfor %}
-<div class="clear"></div>
+  </div>
+ </div>
+</div>
 
+<div id="container">
 {% for week in weeks %}
 <div class="row" id="week_{{forloop.counter}}">
   {% for day in week %}
@@ -40,5 +46,8 @@ $(function() {
 <div id="workout_close" class="default">Close</div>
 <div id="workout_desc"></div>
 </div>
+
+</div>
+
 </body>
 </html>

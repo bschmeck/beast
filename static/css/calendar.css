@@ -1,10 +1,28 @@
+div#header-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+div#header-container {
+  height: 167px;
+  background: #fff;
+}
+div#header {
+  margin: 0 auto;
+  position: relative;
+}
+div#container {
+  margin: 0 auto;
+  overflow: auto;
+  padding-top: 167px;
+}
 h1 {
   font-family: 'Michroma', Aria, serif; font-weight: 400;
   font-size: 48px;
   text-align: center;
-}
-.row {
-  position: relative;
+  margin: 0px;
+  padding-top: 32px;
 }
 .cell {
   width: 14%;
