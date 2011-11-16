@@ -65,6 +65,7 @@ function buildCalendar() {
         $(".row").filter(":not(#" + rowid + ")").filter(":visible").hide("blind", "slow");
         $("#workout_desc").load("/workout/" + id + "/", function() {
             $("#workout:hidden").show("blind", "slow");
+            $("#beastTitle").css('cursor', 'pointer');
             $(".workout_action").click(function(event) {
                 event.preventDefault();
                 var action = event.target.id;
@@ -102,10 +103,21 @@ function buildCalendar() {
         $("#workout").hide("blind", "slow", function() {
             $(".row").filter(":hidden").show("blind", "slow");
         });
+        $("#beastTitle").css('cursor', 'default');
         return false;
     })
     .bind("mouseover mouseout", function(event) {
         $(this).toggleClass("highlight default");
     });
     $("#workout").hide();
+    $("#beastTitle").click(function() {
+	$("#workout_close").toggleClass("highlight", false);
+        $("#workout_close").toggleClass("default", true);
+        $("#workout").hide("blind", "slow", function() {
+            $(".row").filter(":hidden").show("blind", "slow");
+        });
+        $(this).css('cursor', 'default');
+        return false;
+    })
+
 }

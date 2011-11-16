@@ -3,6 +3,7 @@
 <title>Calendar</title>
 <link href='http://fonts.googleapis.com/css?family=Michroma' rel='stylesheet' type='text/css'>
 <link href='{{ STATIC_URL }}css/calendar.css' rel='stylesheet' type='text/css'>
+<link type="text/css" href="{{ STATIC_URL }}css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.8.16.custom.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/calendar.js"></script>
@@ -16,7 +17,7 @@ $(function() {
 <div id="header-wrap">
  <div id="header-container">
   <div id="header">
-   <h1>B.E.A.S.T.</h1>
+   <h1><span id="beastTitle">B.E.A.S.T.</span></h1>
    <div class="userInfo">
 {% if user.is_authenticated %}
     <p>Logged in as <a href="/account">{{user.email}}</a> | <a href="/workout/create">Create Workout</a> | <a href="/faq">FAQ</a> | <a href="/account/logout">Log Out</a></p>
@@ -43,7 +44,7 @@ $(function() {
 {% endfor %}
 
 <div id="workout">
-<div id="workout_close" class="default">Close</div>
+<div id="workout_close" class="default"><div id="workout_center"><span class="ui-icon ui-icon-carat-1-n"></span><span>Close</span><span class="ui-icon ui-icon-carat-1-n"></span><div class="clear"></div></div></div>
 <div id="workout_desc"></div>
 </div>
 

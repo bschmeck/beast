@@ -60,10 +60,16 @@ h1 {
   border: 1px solid #ccc;
 }
 .default {
-  background: #e6e6e6;
+  background: #f66;
 }
-#workout_close {
-  text-align: center;
+#workout_center {
+  margin-left: auto;
+  margin-right: auto;
+  width: 7em;
+}
+#workout_center span {
+  float: left;
+  margin: 0 4px;
 }
 #workout td, #workout th {
   padding: 6px 11px;
