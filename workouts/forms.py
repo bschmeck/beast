@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.db import models
-
+from datetime import datetime
 
 from workouts.models import UserProfile, Workout
 
@@ -36,6 +36,12 @@ class WorkoutForm(forms.ModelForm):
                                          "%H:%M"),
                                  widget=forms.TimeInput(format='%I:%M %p'),
                                  required=False)
+    def clean_startDate(self):
+        data = self.cleaned_data['startDate']
+        if data < datetime.today().date():
+            raise forms.ValidationError("Invalid date.  You cannot create a workout in the past, McFly.")
+        return data
+
     class Meta:
         model = Workout
         exclude = ('organizer', 'confirmed', 'interested', 'tags')
