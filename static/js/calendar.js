@@ -37,6 +37,20 @@ function configAjax() {
     });
 }
 
+function buildAccount() {
+    configAjax();
+    $("#updateInfo").click(function(event) {
+	    event.preventDefault();
+	    $.post("/account/update/", $("#updateForm").serialize(), function(data) {
+		    if (data.success) {
+			alert("Info successfully updated.");
+		    } else {
+			alert("Error: " + data.msg);
+		    }
+		}, "json");
+	});
+}
+
 function buildCalendar() {
     configAjax();
     $(".text")

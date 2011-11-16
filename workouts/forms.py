@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-from workouts.models import Workout
+from workouts.models import UserProfile, Workout
 
 def make_custom_datefield(f):
     formfield = f.formfield()
@@ -72,3 +72,26 @@ class RegistrationForm(forms.Form):
                 raise forms.ValidationError("Passwords do not match.")
 
         return cleaned_data
+
+class AccountInfoForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        exclude = ('user')
+
+    def __init__(self, *args, **kw):
+        super(forms.ModelForm, self).__init__(*args, **kw)
+        self.fields.keyOrder = [
+            'displayName',
+            'weekStart',
+            'notify']
+
+    displayName = forms.CharField(max_length=30, label='Name To Display')
+    weekStart = forms.ChoiceField(choices=((6, 'Sunday'),
+                                           (0, "Monday"),
+                                           (1, "Tuesday"),
+                                           (2, "Wednesday"),
+                                           (3, "Thursday"),
+                                           (4, "Friday"),
+                                           (5, "Saturday")), label='First Day Of The Week')
+                                           
+    notify = forms.BooleanField(required=False, initial=True, label='Notify Me Of New Workouts')

@@ -16,7 +16,7 @@ import random
 import string
 import sys
 
-from forms import RegistrationForm, WorkoutForm
+from forms import AccountInfoForm, RegistrationForm, WorkoutForm
 from models import Location, Message, UserProfile, Workout
 
 def workoutNotify(workout, changeMsg=None):
@@ -52,6 +52,33 @@ def dateStr(d):
     return date.strftime(d, "%m/%d/%Y")
 def timeStr(t):
     return time.strftime(t, "%I:%M %p")
+
+@login_required
+def account(request):
+    today = datetime.now().date()
+    u = request.user.get_profile()
+
+    if request.method == 'POST':
+        f = AccountInfoForm(request.POST, instance=u)
+        ret = {}
+        ret["success"] = False
+        if f.is_valid():
+            f.save()
+            ret["success"] = True
+        else:
+            msg = ''
+            for k, v in f.errors:
+                msg += "%(k): %(v)\n"
+            ret["msg"] = msg
+        return HttpResponse(json.dumps(ret), "application/javascript")
+    else:
+        w = request.user.confirmed_workouts.filter(startDate__gte=today)    
+        f = AccountInfoForm(instance=u)
+        return render_to_response('workouts/account.html',
+                                  {'user': u,
+                                   'form': f,
+                                   'workouts': w},
+                                  context_instance=RequestContext(request))
 
 @login_required
 def updateWorkout(request, w_id):
