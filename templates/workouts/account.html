@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>Account</title>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/calendar.js"></script>
+<script type="text/javascript">
+$(function() {
+  buildAccount();
+});
+</script>
+<style type="text/css">
+#workoutList, #accountInfo {
+float: left;
+margin-left: 50px;
+width: 45%;
+}
+.workout {
+ border: 1px solid #ccc;
+ padding: 5px;
+ margin: 10 0px;
+}
+</style>
+</head>
+<body>
+<a href="/">Back to B.E.A.S.T.</a><br>
+<div id="workoutList">
+<h3>Upcoming Workouts</h3>
+{% if workouts %}
+  {% for workout in workouts %}
+  <div class="workout">
+    {{workout.title}}<br>
+    {{workout.startDate}} @ {{workout.startTime}}<br>
+    {{workout.location}}<br>
+    <p>{{workout.description|linebreaksbr}}</p>
+  </div>
+  {% endfor %}
+{% else %}
+  <span class="emptyMsg">--- No Workouts ---</span>
+{% endif %}
+</div>
+<div id="accountInfo">
+<h3>Account Settings</h3>
+<form id="updateForm">
+{% csrf_token %}
+<table>
+{{form.as_p}}
+</table>
+<button id="updateInfo">Update</button>
+</form>
+</div>
+</body>
+</html>
