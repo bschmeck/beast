@@ -5,7 +5,7 @@ div#header-wrap {
   width: 100%;
 }
 div#header-container {
-  height: 167px;
+  height: 194px;
   background: #fff;
 }
 div#header {
@@ -15,7 +15,7 @@ div#header {
 div#container {
   margin: 0 auto;
   overflow: auto;
-  padding-top: 167px;
+  padding-top: 186px;
 }
 h1 {
   font-family: 'Michroma', Aria, serif; font-weight: 400;

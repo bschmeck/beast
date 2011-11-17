@@ -20,7 +20,7 @@ $(function() {
    <h1><span id="beastTitle">B.E.A.S.T.</span></h1>
    <div class="userInfo">
 {% if user.is_authenticated %}
-    <p>Logged in as <a href="/account">{{user.email}}</a> | <a href="/workout/create">Create Workout</a> | <a href="/faq">FAQ</a> | <a href="/account/logout">Log Out</a></p>
+    <p><a href="/account">My Account</a> | <a href="/workout/create">Create Workout</a> | <a href="/faq">FAQ</a> | <a href="/account/logout">Log Out</a><br>Logged in as {{user.email}}</p>
 {% else %}
     <p><a href="/account/login">Log In</a> | <a href="/account/register">Join</a> | <a href="/faq">FAQ</a></p>
 {% endif %}
