@@ -19,23 +19,22 @@ import sys
 from forms import AccountInfoForm, RegistrationForm, WorkoutForm
 from models import Location, Message, UserProfile, Workout
 
-def workoutNotify(workout, changeMsg=None):
-    if changeMsg:
+def workoutNotify(workout, action, changeMsg=None):
+    if action == "Modified" or action == "Deleted":
         toAddrs = workout.confirmed.values_list('email', flat=True) | workout.interested.values_list('email', flat=True)
-        action = "Modified"
         msg = get_template('workouts/workout_notify_update.email').render(Context({
                     'workout': workout,
                     'changeMsg': changeMsg,
+                    'action': action.lower(),
                     'url': 'http://beast.shmk.org',
-                    'command_url': 'http://beast.shmk.org/faq/commands',
+                    'command_url': 'http://beast.shmk.org/faq#commands',
                     }))
     else:
         toAddrs = UserProfile.objects.filter(notify=True).values_list('user__email', flat=True)
-        action = "Created"
         msg = get_template('workouts/workout_notify_create.email').render(Context({
                     'workout': workout,
                     'url': 'http://beast.shmk.org',
-                    'command_url': 'http://beast.shmk.org/faq/commands',
+                    'command_url': 'http://beast.shmk.org/faq#commands',
                     }))
     subj = "BEAST Workout %s -- %s -- %s" % (action, workout.title, str(workout.startDate))
     fromAddr = workout.addr()
@@ -81,6 +80,30 @@ def account(request):
                                   context_instance=RequestContext(request))
 
 @login_required
+def deleteWorkout(request, w_id):
+    w = get_object_or_404(Workout, pk=w_id)
+    if request.method != 'POST':
+        return HttpResponseRedirect("/")
+    ret = {}
+    ret["success"] = False
+    if request.user != w.organizer:
+        ret["errMsg"] = "You do not have permission to delete this workout."
+    else:
+        try:
+            msg = Message()
+            msg.msgType = 'CHANGE'
+            msg.workout = w
+            msg.sender = request.user
+            msg.msgDate = datetime.now()
+            msg.text = "This workout has been deleted."
+            workoutNotify(w, "Deleted", msg)
+            w.delete()
+            ret["success"] = True            
+        except:
+            ret["errMsg"] = "Error during deletion."
+    return HttpResponse(json.dumps(ret), "application/javascript")
+
+@login_required
 def updateWorkout(request, w_id):
     w = get_object_or_404(Workout, pk=w_id)
     if request.method == 'POST':
@@ -120,7 +143,7 @@ def updateWorkout(request, w_id):
                     msg.text = changeText
                     msg.save()
 
-                    workoutNotify(w, msg)
+                    workoutNotify(w, "Modified", msg)
 
             return HttpResponseRedirect('/')
             
@@ -147,7 +170,7 @@ def createWorkout(request):
             workout.save()
             request.user.confirmed_workouts.add(workout)
 
-            workoutNotify(workout)
+            workoutNotify(workout, "Created")
             return HttpResponseRedirect("/")
     else:
         form = WorkoutForm()

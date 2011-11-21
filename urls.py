@@ -15,6 +15,7 @@ urlpatterns = patterns(
     url(r'^$', 'workouts.views.calendar'),
     url(r'^workout/(?P<w_id>\d+)/$', 'workouts.views.getWorkout'),
     url(r'^workout/(?P<w_id>\d+)/action/$', 'workouts.views.joinWorkout'),
+    url(r'^workout/(?P<w_id>\d+)/delete/$', 'workouts.views.deleteWorkout'),
     url(r'^workout/(?P<w_id>\d+)/update/$', 'workouts.views.updateWorkout'),
     url(r'^workout/create/$', 'workouts.views.createWorkout'),
     (r'^account/$', 'workouts.views.account'),

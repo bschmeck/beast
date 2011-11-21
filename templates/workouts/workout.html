@@ -29,7 +29,8 @@
 
 <br>
 {% if canUpdate %}
-<a href="/workout/{{workout.pk}}/update/">Modify this Workout</a>
+<a href="/workout/{{workout.pk}}/update/">Modify this Workout</a><br>
+<a href="#" onClick='delWorkout({{workout.pk}}); return false;'>Delete this Workout</a>
 {% endif %}
 </div>
 <div id="workoutMessages">

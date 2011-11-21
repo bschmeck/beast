@@ -117,3 +117,19 @@ function buildCalendar() {
 	$("#workout_close").trigger("click");
     });
 }
+
+function delWorkout(id) {
+    var r = confirm("Are you sure you wish to delete this workout?");
+    if (!r) {
+	return;
+    }
+    $.post("/workout/" + id + "/delete/", function(data) {
+	    if (data.success) {
+		alert("Workout successfully deleted.");
+		$("#workout_close").trigger("click");
+		$("#workout_" + id).remove();
+	    } else {
+		alert("Unable to delete workout: " + data.errMsg);
+	    }
+	}, "json");
+}
