@@ -35,6 +35,17 @@ $(function() {
       txt = "<p>Set the date for this workout.</p>";
     } else if (this.id === "id_startTime") {
       txt = "<p>Set the time when the workout will start (the 'go' time.)</p>";
+      txt += "<p>Valid time formats are:</p>";
+      txt += "<ul>";
+      txt += "<li>7:00 am</li>";
+      txt += "<li>9:30 pm</li>";
+      txt += "<li>7:00am</li>";
+      txt += "<li>9:30pm</li>";
+      txt += "<li>7am</li>";
+      txt += "<li>9pm</li>";
+      txt += "<li>7:00</li>";
+      txt += "<li>21:30</li>";
+      txt += "</ul>"
     } else if (this.id === "id_location") {
       txt = "<p>Set the location for the workout.  You can choose from one of the standard locations or specify one of your own.</p>";
       txt += "<p>The standard location choices are:</p>";
@@ -46,6 +57,17 @@ $(function() {
     } else if (this.id === "id_warmupTime") {
       txt = "<p>Set the time when the warmup for the workout will start.</p>";
       txt += '<p style="color: #c00;">This is optional.</p>';
+      txt += "<p>Valid time formats are:</p>";
+      txt += "<ul>";
+      txt += "<li>7:00 am</li>";
+      txt += "<li>9:30 pm</li>";
+      txt += "<li>7:00am</li>";
+      txt += "<li>9:30pm</li>";
+      txt += "<li>7am</li>";
+      txt += "<li>9pm</li>";
+      txt += "<li>7:00</li>";
+      txt += "<li>21:30</li>";
+      txt += "</ul>"
     } else if (this.id === "id_description") {
       txt = "<p>Set any details related to this workout, such as pacing, route, etc.</p>";
     }
