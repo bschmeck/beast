@@ -1,8 +1,6 @@
 div#header-wrap {
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
 }
 div#header-container {
   height: 194px;

@@ -52,6 +52,8 @@ function buildAccount() {
 }
 
 function buildCalendar() {
+    $("#header-wrap").width($("#container").width());
+
     configAjax();
     $(".text")
     .bind("mouseover mouseout", function(event) {
