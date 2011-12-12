@@ -1,0 +1,3 @@
+B.E.A.S.T. is a collaborative website for scheduling running workouts.  It is currently used by Boston area runners.
+
+There are two pieces to BEAST.  The first is a common calendar, displaying the details of upcoming workouts.  The second piece is automatically generated mailing lists.  Each workout created on BEAST gets its own mailing list, and everyone who joins the workout is automatically added to the mailing list.  This simplifies the process of notifying everyone about changes to the workout.
