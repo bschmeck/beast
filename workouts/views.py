@@ -48,9 +48,15 @@ def genChangeText(field, old, new):
     return '%s changed from:\n%s\nto:\n%s\n' % (field, old, new)
 
 def dateStr(d):
-    return date.strftime(d, "%m/%d/%Y")
+    if d:
+        return date.strftime(d, "%m/%d/%Y")
+
+    return "None"
 def timeStr(t):
-    return time.strftime(t, "%I:%M %p")
+    if t:
+        return time.strftime(t, "%I:%M %p")
+
+    return "None"
 
 @login_required
 def account(request):
