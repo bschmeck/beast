@@ -1,26 +1,5 @@
-div#header-wrap {
-  position: fixed;
-  top: 0;
-}
-div#header-container {
-  height: 194px;
-  background: #fff;
-}
-div#header {
-  margin: 0 auto;
-  position: relative;
-}
-div#container {
-  margin: 0 auto;
-  overflow: auto;
-  padding-top: 186px;
-}
-h1 {
-  font-family: 'Michroma', Aria, serif; font-weight: 400;
-  font-size: 48px;
-  text-align: center;
-  margin: 0px;
-  padding-top: 32px;
+.topbarText {
+  padding: 10px 10px 11px;
 }
 .cell {
   width: 14%;
@@ -33,6 +12,13 @@ h1 {
   color: #fff;
   text-align: center;
 }
+#calHeader {
+  position: fixed;
+  width: 100%;
+  background-color: #EEEEEE;
+  height: 78px;
+  z-index: 9999;
+}
 .dayOfWeek {
   width: 14%;
   float: left;
@@ -41,8 +27,21 @@ h1 {
   color: #fff;
   text-align: center;
 }
+.atbottom {
+  position: absolute;
+  bottom: 0px;
+  width: 91%;
+}
+.daySpacer {
+  width: 1%;
+  float: left;
+}
+#calContainer {
+  padding-top: 78px;
+}
 .text {
   border: 1px solid #ccc;
+  padding: 2px 5px;
 }
 .mine {
   border: 1px solid #f00;
@@ -55,10 +54,19 @@ h1 {
   clear: both;
 }
 #workout {
-  border: 1px solid #ccc;
+  margin-top: 10px;
 }
 .default {
   background: #f66;
+}
+#workout_close {
+	-webkit-border-radius: 6px 6px 0px 0px;
+       -moz-border-radius: 6px 6px 0px 0px;
+            border-radius: 6px 6px 0px 0px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+       -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+            box-shadow: 0 1px 2px rgba(0,0,0,.15);
+
 }
 #workout_center {
   margin-left: auto;
@@ -68,6 +76,9 @@ h1 {
 #workout_center span {
   float: left;
   margin: 0 4px;
+}
+#workout_desc {
+
 }
 #workout td, #workout th {
   padding: 6px 11px;
@@ -79,14 +90,6 @@ h1 {
 }
 #workout th, .userInfo {
   text-align: center;
-}
-#workoutDetails {
-  float: left;
-  width: 50%;
-}
-#workoutMessages {
-  float: left;
-  width: 50%;
 }
 .msg {
   margin: 10px;

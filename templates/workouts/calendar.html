@@ -1,54 +1,97 @@
-<html>
-<head>
-<title>Calendar</title>
-<link href='http://fonts.googleapis.com/css?family=Michroma' rel='stylesheet' type='text/css'>
-<link href='{{ STATIC_URL }}css/calendar.css' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" type="text/css" media="all" />
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/calendar.js"></script>
-<script type="text/javascript">
-$(function() {
-  buildCalendar();
-});
-</script>
-</head>
-<body>
-<div id="header-wrap">
- <div id="header-container">
-  <div id="header">
-   <h1><span id="beastTitle">B.E.A.S.T.</span></h1>
-   <div class="userInfo">
-{% if user.is_authenticated %}
-    <p><a href="/account">My Account</a> | <a href="/workout/create">Create Workout</a> | <a href="/faq">FAQ</a> | <a href="/account/logout">Log Out</a><br>Logged in as {{user.email}}</p>
-{% else %}
-    <p><a href="/account/login">Log In</a> | <a href="/account/register">Join</a> | <a href="/faq">FAQ</a></p>
-{% endif %}
-   </div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>B.E.A.S.T. Calendar</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-{% for day in days %}
-   <div class="dayOfWeek">{{day}}</div>
-{% endfor %}
-  </div>
- </div>
-</div>
+    <!-- HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/calendar.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+	<link href='{{ STATIC_URL }}css/calendar.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+    <style type="text/css">
+      /* Override some defaults */
+      html, body {
+        background-color: #eee;
+      }
+      .container > footer p {
+        text-align: center; /* center align it with the container */
+      }
+	  .container {
+	    width: 91%;
+	  }
+      /* The white background content wrapper */
+      .content {
+        background-color: #fff;
 
-<div id="container">
-{% for week in weeks %}
-<div class="row" id="week_{{forloop.counter}}">
-  {% for day in week %}
-    {% include "workouts/calendar_cell.html" %}
-  {% endfor %}
-  <div class="clear"></div>
-</div>
-{% endfor %}
+        -webkit-border-radius: 6px 6px 6px 6px;
+           -moz-border-radius: 6px 6px 6px 6px;
+                border-radius: 6px 6px 6px 6px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                box-shadow: 0 1px 2px rgba(0,0,0,.15);
+      }
 
-<div id="workout">
-<div id="workout_close" class="default"><div id="workout_center"><span class="ui-icon ui-icon-carat-1-n"></span><span>Close</span><span class="ui-icon ui-icon-carat-1-n"></span><div class="clear"></div></div></div>
-<div id="workout_desc"></div>
-</div>
+      .topbar .btn {
+        border: 0;
+      }
 
-</div>
+    </style>
+    <script type="text/javascript">
+      $(function() {
+	    buildCalendar();
+	  });
+    </script>
+  </head>
 
-</body>
+  <body>
+
+	{% include "workouts/topbar.html" with active="calendar" %}
+	<div id="calHeader">
+	  <div class="container">
+		<div class="atbottom">
+		  <div class="daySpacer">&nbsp;</div>
+		  {% for day in days %}
+		  <div class="dayOfWeek">{{day}}</div>
+		  {% endfor %}
+		  <div class="daySpacer">&nbsp;</div>
+		  <div class="clear"></div>
+		</div>
+	  </div>
+	</div>
+
+    <div class="container" id="calContainer">
+      <div class="content">
+		{% for week in weeks %}
+		<div class="week" id="week_{{forloop.counter}}">
+		  <div class="daySpacer">&nbsp;</div>
+		  {% for day in week %}
+		  {% include "workouts/calendar_cell.html" %}
+		  {% endfor %}
+		  <div class="daySpacer">&nbsp;</div>
+		  <div class="clear"></div>
+		</div>
+		{% endfor %}
+      </div> <!-- /content -->
+
+      <div id="workout" class="content">
+		<div id="workout_close" class="default">
+		  <div id="workout_center">
+			<span class="ui-icon ui-icon-carat-1-n"></span>
+			<span>Close</span>
+			<span class="ui-icon ui-icon-carat-1-n"></span>
+			<div class="clear"></div>
+		  </div>
+		</div>
+		<div id="workout_desc" class="row"></div>
+	  </div> <!-- /content -->
+	</div> <!-- /container -->
+
+  </body>
 </html>

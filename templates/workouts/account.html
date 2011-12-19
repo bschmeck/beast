@@ -1,53 +1,84 @@
 <html>
-<head>
-<title>Account</title>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/calendar.js"></script>
-<script type="text/javascript">
-$(function() {
-  buildAccount();
-});
-</script>
-<style type="text/css">
-#workoutList, #accountInfo {
-float: left;
-margin-left: 50px;
-width: 45%;
-}
-.workout {
- border: 1px solid #ccc;
- padding: 5px;
- margin: 10 0px;
-}
-</style>
-</head>
-<body>
-<a href="/">Back to B.E.A.S.T.</a><br>
-<div id="workoutList">
-<h3>Upcoming Workouts</h3>
-{% if workouts %}
-  {% for workout in workouts %}
-  <div class="workout">
-    {{workout.title}}<br>
-    {{workout.startDate}} @ {{workout.startTime}}<br>
-    {{workout.location}}<br>
-    <p>{{workout.description|linebreaksbr}}</p>
-  </div>
-  {% endfor %}
-{% else %}
-  <span class="emptyMsg">--- No Workouts ---</span>
-{% endif %}
-</div>
-<div id="accountInfo">
-<h3>Account Settings</h3>
-<form id="updateForm">
-{% csrf_token %}
-<table>
-{{form.as_p}}
-</table>
-<button id="updateInfo">Update</button>
-</form>
-</div>
-</body>
+  <head>
+	<title>B.E.A.S.T. Account</title>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/calendar.js"></script>
+	<script type="text/javascript">
+	  $(function() {
+	  buildAccount();
+	  });
+	</script>
+	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+	<style type="text/css">
+	  /* Override some defaults */
+      html, body {
+        background-color: #eee;
+      }
+      .container > footer p {
+        text-align: center; /* center align it with the container */
+      }
+	  .container {
+	    width: 91%;
+	  }
+      /* The white background content wrapper */
+      .content, .sidebar {
+	    padding: 5px;
+        background-color: #fff;
+
+        -webkit-border-radius: 6px 6px 6px 6px;
+           -moz-border-radius: 6px 6px 6px 6px;
+                border-radius: 6px 6px 6px 6px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                box-shadow: 0 1px 2px rgba(0,0,0,.15);
+      }
+
+      .topbar .btn {
+        border: 0;
+      }
+
+	  .workout {
+	    margin-left: 10px;
+	  }
+	  .topbarText {
+        padding: 10px 10px 11px;
+	  }
+	  body {
+        padding-top: 60px;
+	  }
+	</style>
+  </head>
+  <body>
+	{% include "workouts/topbar.html" with active="account" %}
+	<div class="container-fluid">
+	  <div id="accountInfo" class="sidebar">
+		<h3>Account Settings</h3>
+		<form id="updateForm" class="form-stacked">
+		  {% csrf_token %}
+		  {% for field in form %}
+		    {% include "workouts/form_field.html" %}
+		  {% endfor %}
+		  <button class="btn primary" id="updateInfo">Update</button>
+		</form>
+	  </div>
+	  <div class="content">
+		<div id="workoutList" class="span12">
+		  <h3>Upcoming Workouts</h3>
+		  {% if workouts %}
+		  {% for workout in workouts %}
+		  <div class="alert-message block-message info workout">
+			{{workout.title}}<br>
+			{{workout.startDate}} @ {{workout.startTime}}<br>
+			{{workout.location}}<br>
+			<p>{{workout.description|linebreaksbr}}</p>
+		  </div>
+		  {% endfor %}
+		  {% else %}
+		  <span class="emptyMsg">--- No Workouts ---</span>
+		  {% endif %}
+		</div>
+	  </div>
+	</div>
+  </body>
 </html>

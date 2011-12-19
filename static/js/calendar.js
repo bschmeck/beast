@@ -52,26 +52,23 @@ function buildAccount() {
 }
 
 function buildCalendar() {
-    $("#header-wrap").width($("#container").width());
-
     configAjax();
     $(".text")
-    .bind("mouseover mouseout", function(event) {
-        $(this).toggleClass("highlight", event.type === "mouseover");
-    })
-    .click(function() {
-        var re = /workout_(\d+)/;
-        var id = re.exec(this.id)[1];
-        var rowid = $(this).closest(".row").attr("id");
-        var w = this;
-        $(".row").filter(":not(#" + rowid + ")").filter(":visible").hide("blind", "slow");
-        $("#workout_desc").load("/workout/" + id + "/", function() {
-	    $("#workout:hidden").show("blind", "slow", function() {
-		$("#workout_close").bind("mouseover mouseout", function(event) {
-	            $(this).toggleClass("highlight default");
-		});
-	    });
-	    $("#beastTitle").css('cursor', 'pointer');
+        .bind("mouseover mouseout", function(event) {
+            $(this).toggleClass("highlight", event.type === "mouseover");
+        })
+        .click(function() {
+            var re = /workout_(\d+)/;
+            var id = re.exec(this.id)[1];
+            var weekid = $(this).closest(".week").attr("id");
+            var w = this;
+            $(".week").filter(":not(#" + weekid + ")").filter(":visible").hide("blind", "slow");
+            $("#workout_desc").load("/workout/" + id + "/", function() {
+	            $("#workout:hidden").show("blind", "slow", function() {
+		            $("#workout_close").bind("mouseover mouseout", function(event) {
+	                    $(this).toggleClass("highlight default");
+		            });
+	            });
             $(".workout_action").click(function(event) {
                 event.preventDefault();
                 var action = event.target.id;
@@ -89,49 +86,45 @@ function buildCalendar() {
                         $("#drop").removeAttr("disabled");
                     }
                     if (action === "join") {
-			$(w).addClass("mine");
-			alert("You have joined this workout.");
-		    } else if (action === "maybe") {
-			$(w).addClass("mine");
-			alert("You are a 'maybe' for this workout.");                       
+			            $(w).addClass("mine");
+			            alert("You have joined this workout.");
+		            } else if (action === "maybe") {
+			            $(w).addClass("mine");
+			            alert("You are a 'maybe' for this workout.");                       
                     } else {
                         $(w).removeClass("mine");
-			alert("You have dropped out of this workout.");                       
+			            alert("You have dropped out of this workout.");                       
                     }
                     $(w).html(data.cellText);
                 }, "json");
             });
-		console.log("end show");
+            });
         });
-    });
     $("#workout_close").click(function() {
         $(this).toggleClass("highlight", false);
         $(this).toggleClass("default", true);
-	$(this).unbind("mouseover mouseout");
+	    $(this).unbind("mouseover mouseout");
         $("#workout").hide("blind", "slow", function() {
-            $(".row").filter(":hidden").show("blind", "slow");
+            $(".week").filter(":hidden").show("blind", "slow");
         });
-        $("#beastTitle").css('cursor', 'default');
         return false;
     });
     $("#workout").hide();
-    $("#beastTitle").click(function() {
 	$("#workout_close").trigger("click");
-    });
 }
 
 function delWorkout(id) {
     var r = confirm("Are you sure you wish to delete this workout?");
     if (!r) {
-	return;
+	    return;
     }
     $.post("/workout/" + id + "/delete/", function(data) {
 	    if (data.success) {
-		alert("Workout successfully deleted.");
-		$("#workout_close").trigger("click");
-		$("#workout_" + id).remove();
+		    alert("Workout successfully deleted.");
+		    $("#workout_close").trigger("click");
+		    $("#workout_" + id).remove();
 	    } else {
-		alert("Unable to delete workout: " + data.errMsg);
+		    alert("Unable to delete workout: " + data.errMsg);
 	    }
 	}, "json");
 }

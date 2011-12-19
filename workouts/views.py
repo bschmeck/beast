@@ -80,8 +80,7 @@ def account(request):
         w = request.user.confirmed_workouts.filter(startDate__gte=today)    
         f = AccountInfoForm(instance=u)
         return render_to_response('workouts/account.html',
-                                  {'user': u,
-                                   'form': f,
+                                  {'form': f,
                                    'workouts': w},
                                   context_instance=RequestContext(request))
 
@@ -362,4 +361,6 @@ def joinWorkout(request, w_id):
     return HttpResponse(json.dumps(ret), "application/javascript")
 
 def faq(request):
-    return render_to_response('workouts/faq.html', {})
+    return render_to_response('workouts/faq.html',
+                              {},
+                              context_instance=RequestContext(request))

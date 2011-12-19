@@ -1,4 +1,4 @@
-<div id="workoutDetails">
+<div id="workoutDetails" class="span8">
 <table>
 <tr><th class="desc" colspan=2>{{workout.title}}</th></tr>
 <tr><td class="desc">Date</td><td>{{workout.startDate}}</td></tr>
@@ -21,10 +21,11 @@
 <tr><td class="desc">Interested</td><td id="interested">{% for u in interested %} {{u}}, {% endfor %}</td></tr>
 </table>
 
+<div style="padding-left: 5px">
 {% if user.is_authenticated %}
-  <button id="join" class="workout_action" {% if not showJoin %}disabled{% endif %}>Join</button>
-  <button id="maybe" class="workout_action" {% if not showMaybe %}disabled{% endif %}>Maybe</button>
-  <button id="drop" class="workout_action" {% if not showDrop %}disabled{% endif %}>Drop Out</button>
+  <button id="join" class="btn success workout_action" {% if not showJoin %}disabled{% endif %}>Join</button>
+  <button id="maybe" class="btn workout_action" {% if not showMaybe %}disabled{% endif %}>Maybe</button>
+  <button id="drop" class="btn danger workout_action" {% if not showDrop %}disabled{% endif %}>Drop Out</button>
 {% endif %}
 
 <br>
@@ -33,9 +34,10 @@
 <a href="#" onClick='delWorkout({{workout.pk}}); return false;'>Delete this Workout</a>
 {% endif %}
 </div>
-<div id="workoutMessages">
+</div>
+<div id="workoutMessages" class="span8">
 {% for msg in messages %}
-<div class="msg">
+<div class="alert-message info">
 {{msg.get_msgType_display}} from {{msg.sender.get_profile.displayName}}<br>
 {{msg.msgDate}}<br>
 ------<br>

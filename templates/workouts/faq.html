@@ -1,91 +1,134 @@
 <!DOCTYPE html>
 <html>
-<head>
-<style type="text/css">
-div.qna {padding: 15px;}
-</style>
-<title>BEAST FAQ</title>
-</head>
-<body>
-<h1>BEAST FAQ</h1>
-<h2>BEAST Operation</h2>
-<div class="qna">
-<b>Q: What is BEAST?</b><br>
-<b>A:</b> A way to collaboratively schedule runs and workouts with others in the Boston area.
-</div>
+  <head>
+	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+	<style type="text/css">
+      /* Override some defaults */
+      html, body {
+        background-color: #eee;
+      }
+	  body {
+	    padding-top: 60px;
+	  }
+      .container > footer p {
+        text-align: center; /* center align it with the container */
+      }
+	  .container {
+	    width: 91%;
+	  }
+      /* The white background content wrapper */
+      .content {
+	    padding: 5px;
+        background-color: #fff;
 
-<div class="qna">
-<b>Q: How does BEAST work?</b><br>
-<b>A:</b> The first step is to create a workout.  At that point, an email is sent to all BEAST users, notifying them of the new workout.  Users are then able to sign up for the workout, which adds them to the list of runners planning on doing the workout.  Each workout also has a dedicated mailing list.  All runners who have signed up for the workout are automatically added to the list.  Furthermore, all emails sent to the list are displayed when the workout is viewed on BEAST.  The mailing list is a convienent way to coordinate workout details without mistakenly omitting runners.
-</div>
+        -webkit-border-radius: 6px 6px 6px 6px;
+           -moz-border-radius: 6px 6px 6px 6px;
+                border-radius: 6px 6px 6px 6px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                box-shadow: 0 1px 2px rgba(0,0,0,.15);
+      }
 
-<div class="qna">
-<b>Q: Do I need an account to use BEAST?</b><br>
-<b>A:</b> Not explicitly.  All workouts are publicly viewable, but to sign up for and create workouts, you need an account.
-</div>
+      .topbar .btn {
+        border: 0;
+      }
 
-<div class="qna">
-<b>Q: How do I create a workout?</b><br>
-<b>A:</b> Click the "Create Workout" link at the top of the page, then fill out the ensuing form.  Instructions will be displayed on the workout creation form.
-</div>
+	  .topbarText {
+        padding: 10px 10px 11px;
+	  }
 
-<div class="qna">
-<b>Q: How do I modify a workout?</b><br>
-<b>A:</b> When viewing the details of a workout, click the "Modify this Workout" link, then make changes to the ensuing form.  At this time, only the person who created the workout is able to modify it.
-</div>
+	  div.qna {padding: 10px 15px;}
+	</style>
+	<title>B.E.A.S.T. FAQ</title>
+  </head>
+  <body>
+	{% include "workouts/topbar.html" with active="faq" %}
 
-<div class="qna">
-<b>Q: How do I add to the list of default locations?</b><br>
-<b>A:</b> Just email Ben and ask.
-</div>
+	<div class="container">
+	  <div class="content">
+		<h1>BEAST FAQ</h1>
+		<h2>BEAST Operation</h2>
+		<div class="qna">
+		  <b>Q: What is BEAST?</b><br>
+		  <b>A:</b> A way to collaboratively schedule runs and workouts with others in the Boston area.
+		</div>
 
-<div class="qna">
-<b>Q: What does BEAST stand for?</b><br>
-<b>A:</b> Boston Electronic Agenda for Synergistic Training.
-</div>
+		<div class="qna">
+		  <b>Q: How does BEAST work?</b><br>
+		  <b>A:</b> The first step is to create a workout.  At that point, an email is sent to all BEAST users, notifying them of the new workout.  Users are then able to sign up for the workout, which adds them to the list of runners planning on doing the workout.  Each workout also has a dedicated mailing list.  All runners who have signed up for the workout are automatically added to the list.  Furthermore, all emails sent to the list are displayed when the workout is viewed on BEAST.  The mailing list is a convienent way to coordinate workout details without mistakenly omitting runners.
+		</div>
 
-<div class="qna">
-<b>Q: That's terrible.</b><br>
-<b>A:</b> Blame Brian Harvey.
-</div>
+		<div class="qna">
+		  <b>Q: Do I need an account to use BEAST?</b><br>
+		  <b>A:</b> Not explicitly.  All workouts are publicly viewable, but to sign up for and create workouts, you need an account.
+		</div>
 
-<div id="commands">
-<h2>BEAST Commands</h2>
-<div class="qna">
-<b>Q: What are BEAST Commands?</b><br>
-<b>A:</b> BEAST commands are a way to interact with workouts in the BEAST system via email.  Currently, BEAST commands only support a subset of the operations available via the website.
-</div>
+		<div class="qna">
+		  <b>Q: How do I create a workout?</b><br>
+		  <b>A:</b> Click the "Create Workout" link at the top of the page, then fill out the ensuing form.  Instructions will be displayed on the workout creation form.
+		</div>
 
-<div class="qna">
-<b>Q: How do I use BEAST commands?</b><br>
-<b>A:</b> Each workout in BEAST has a dedicated email address and BEAST commands for a workout must be sent to that workout's address.  Each BEAST command must be on it's own line and follow a specific format.  The format of a BEAST command is: "[BEAST] command"
-</div>
+		<div class="qna">
+		  <b>Q: How do I modify a workout?</b><br>
+		  <b>A:</b> When viewing the details of a workout, click the "Modify this Workout" link, then make changes to the ensuing form.  At this time, only the person who created the workout is able to modify it.
+		</div>
 
-<div class="qna">
-<b>Q: What BEAST commands are available?</b><br>
-<b>A:</b> For now, BEAST commands can only be used to sign up for, or drop out of, a workout.  The commands are:<br>
-<ul>
-<li>Join - To sign up for a workout.</li>
-<li>Maybe - To express tentative interest in a workout.</li>
-<li>Drop - To drop out of a workout.</li>
-</ul>
-</div>
+		<div class="qna">
+		  <b>Q: How do I add to the list of default locations?</b><br>
+		  <b>A:</b> Just email Ben and ask.
+		</div>
 
-<div class="qna">
-<b>Q: Can you give me an example?</b><br>
-<b>A:</b> To sign up for a workout, send an email simliar to this:<br>
-<pre>
+		<div class="qna">
+		  <b>Q: What does BEAST stand for?</b><br>
+		  <b>A:</b> Boston Electronic Agenda for Synergistic Training.
+		</div>
+
+		<div class="qna">
+		  <b>Q: That's terrible.</b><br>
+		  <b>A:</b> Blame Brian Harvey.
+		</div>
+
+		<div id="commands">
+		  <h2>BEAST Commands</h2>
+		  <div class="qna">
+			<b>Q: What are BEAST Commands?</b><br>
+			<b>A:</b> BEAST commands are a way to interact with workouts in the BEAST system via email.  Currently, BEAST commands only support a subset of the operations available via the website.
+		  </div>
+
+		  <div class="qna">
+			<b>Q: How do I use BEAST commands?</b><br>
+			<b>A:</b> Each workout in BEAST has a dedicated email address and BEAST commands for a workout must be sent to that workout's address.  Each BEAST command must be on it's own line and follow a specific format.  The format of a BEAST command is: "[BEAST] command"
+		  </div>
+
+		  <div class="qna">
+			<b>Q: What BEAST commands are available?</b><br>
+			<b>A:</b> For now, BEAST commands can only be used to sign up for, or drop out of, a workout.  The commands are:<br>
+			<ul>
+			  <li>Join - To sign up for a workout.</li>
+			  <li>Maybe - To express tentative interest in a workout.</li>
+			  <li>Drop - To drop out of a workout.</li>
+			</ul>
+		  </div>
+
+		  <div class="qna">
+			<b>Q: Can you give me an example?</b><br>
+			<b>A:</b> To sign up for a workout, send an email simliar to this:<br>
+			<pre>
 To: beast+XX@beast.shmk.org
 From: joe.user@example.com
 Subject: I want to run
 ====================
 [BEAST] Join
-</pre>
-</div>
+			</pre>
+		  </div>
 
-<div class="qna">
-<b>Q: Are there any restrictions?</b><br>
-<b>A:</b> The email must be sent from the address with which you sign in to BEAST.  Each command must be on a separate line, the line must begin with [BEAST] and there must be a space between [BEAST] and the command. 
-</div>
+		  <div class="qna">
+			<b>Q: Are there any restrictions?</b><br>
+			<b>A:</b> The email must be sent from the address with which you sign in to BEAST.  Each command must be on a separate line, the line must begin with [BEAST] and there must be a space between [BEAST] and the command. 
+		  </div>
 
-</div>
+		</div>
+	  </div>
+	</div>
+  </body>
+</html>

@@ -1,34 +1,66 @@
 <html>
-<head>
-<title>Workout Creation</title>
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" type="text/css" media="all" />
-<style type="text/css">
-div {
-  float: left;
-}
-#explain {
-  background: #f5f5f5;
-  width: 300px;
-  margin: 0px 25px;
-  padding: 0 15px;
-}
-</style>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<script type="text/javascript">
-$(function() {
-  $(".datePicker").datepicker({
-    onSelect: function(dateText, inst) {
-      /* Just hardcode this for now.  Could be more elegant. */
-      $("#id_startTime").focus();
-    },
-  });
-  $("#id_location").autocomplete({
-    source: [{{locationStr|safe}}],
-    minLength: 0,
-  });
-  $("input, textarea").bind("focus", function(event, ui) {
-    var txt = "";
+  <head>
+	<title>B.E.A.S.T. Workout Creation</title>
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+	<style type="text/css">
+	  /* Override some defaults */
+      html, body {
+        background-color: #eee;
+      }
+      .container > footer p {
+        text-align: center; /* center align it with the container */
+      }
+	  .container {
+	    width: 91%;
+	  }
+      /* The white background content wrapper */
+      .content {
+	    padding: 5px;
+        background-color: #fff;
+
+        -webkit-border-radius: 6px 6px 6px 6px;
+           -moz-border-radius: 6px 6px 6px 6px;
+                border-radius: 6px 6px 6px 6px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                box-shadow: 0 1px 2px rgba(0,0,0,.15);
+      }
+
+      .topbar .btn {
+        border: 0;
+      }
+
+	  .topbarText {
+        padding: 10px 10px 11px;
+	  }
+	  body {
+        padding-top: 60px;
+	  }
+
+	  #explain {
+ 	    background: #f5f5f5;
+	    width: 300px;
+	    margin: 0px 25px;
+	    padding: 0 15px;
+	  }
+	</style>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+	<script type="text/javascript">
+	  $(function() {
+	    $(".datePicker").datepicker({
+          onSelect: function(dateText, inst) {
+          /* Just hardcode this for now.  Could be more elegant. */
+          $("#id_startTime").focus();
+        },
+      });
+      $("#id_location").autocomplete({
+        source: [{{locationStr|safe}}],
+        minLength: 0,
+      });
+	  $("input, textarea").bind("focus", function(event, ui) {
+      var txt = "";
     if (this.id === "id_title") {
       txt = "<p>Give a short title to the workout.</p>";
     } else if (this.id === "id_startDate") {
@@ -75,24 +107,30 @@ $(function() {
   });
   $("input[type='text']:first").focus();
 });
-</script>
-</head>
-<body>
-<div>
-{% if action == "update" %}
-<form action="/workout/{{w_id}}/update/" method="post">
-{% else %}
-<form action="/workout/create/" method="post">
-{% endif %}
-{% csrf_token %}
-<table>
-{{ form.as_table }}
-</table>
-<input type="submit" value="Submit" /> <a href="/">Cancel</a>
-</form>
-</div>
-<div id="explain">
-
-</div>
-</body>
+	</script>
+  </head>
+  <body>
+	{% include "workouts/topbar.html" with active="edit" %}
+	<div class="container">
+	  <div class="content">
+		<div class="row">
+		  <div class="span8">
+			<form
+			   {% if action == "update" %}
+			   action="/workout/{{w_id}}/update/"
+			   {% else %}
+			   action="/workout/create/"
+			   {% endif %}
+			   method="post">
+			  {% csrf_token %}
+			  <table>
+				{{ form.as_p }}
+			  </table>
+			  <input class="btn" type="submit" value="Submit" />
+			</form>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </body>
 </html>
