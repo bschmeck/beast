@@ -5,7 +5,7 @@
 <tr><td class="desc">"Go" time</td><td>{{workout.startTime}}</td></tr>
 <tr><td class="desc">Location</td><td>
 {% if locText %}
-  <a href="#" onClick='alert("{{locText}}"); return false;'>
+  <a href="#" id="locText" data-placement='right' rel='twipsy' title="{{locText}}">
 {% endif %}
 {{workout.location}}
 {% if locText %}

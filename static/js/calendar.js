@@ -69,6 +69,9 @@ function buildCalendar() {
 	                    $(this).toggleClass("highlight default");
 		            });
 	            });
+                $("a[rel=twipsy]").twipsy({
+                    live: true
+                });
             $(".workout_action").click(function(event) {
                 event.preventDefault();
                 var action = event.target.id;
