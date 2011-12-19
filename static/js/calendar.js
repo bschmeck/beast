@@ -51,6 +51,58 @@ function buildAccount() {
 	});
 }
 
+function buildEdit(locStr) {
+	$(".datePicker").datepicker({
+        onSelect: function(dateText, inst) {
+            /* Just hardcode this for now.  Could be more elegant. */
+            $("#id_startTime").focus();
+        }
+    });
+	
+    /* Configure popovers for each part of the form. */
+    var opt = {
+        trigger: 'focus',
+        html: true,
+        content: 'content'
+    };
+    $("input, textarea").popover(opt);
+
+	$("#id_title").attr({
+	    title: 'Workout Title',
+	    content: "Give a short title to the workout."
+	});
+	$("id_startDate").attr({
+	    title: 'Workout Date',
+	    content: "Set the date for this workout."
+	});
+	$("#id_startTime").attr({
+	    title: 'Workout Time',
+	    content: "<p>Set the time when the workout will start (the 'go' time.)</p><p>Valid time formats are:</p><ul><li>7:00 am</li><li>9:30 pm</li><li>7:00am</li><li>9:30pm</li><li>7am</li><li>9pm</li><li>7:00</li><li>21:30</li></ul>"
+	});
+    txt = "<p>Set the location for the workout.  You can choose from one of the standard locations or specify one of your own.</p>";
+    txt += "<p>The standard location choices are:</p>";
+    txt += "<ul>" + locStr + "</ul>";
+	$("#id_location").attr({
+	    title: 'Workout Location',
+	    content: txt
+	});
+	$("#id_warmupTime").attr({
+	    title: 'Warmup Time',
+	    content: "<p>Set the time when the warmup for the workout will start</p><p style='color: #c00;'>This is optional.</p><p>Valid time formats are:</p><ul><li>7:00 am</li><li>9:30 pm</li><li>7:00am</li><li>9:30pm</li><li>7am</li><li>9pm</li><li>7:00</li><li>21:30</li></ul>"
+	});
+	$("#id_description ").attr({
+	    title: 'Workout Description',
+	    content: "Set any details related to this workout, such as pacing, route, etc."
+	});
+
+    $("#id_location").bind("focus", function(event, ui) {
+      $(this).autocomplete("search");
+    });
+    
+    $("input[type='text']:first").focus();
+
+}
+
 function buildCalendar() {
     configAjax();
     $(".text")

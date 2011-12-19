@@ -44,92 +44,51 @@
 	    margin: 0px 25px;
 	    padding: 0 15px;
 	  }
+
+	  div input {
+	    height: 28px;
+	  }
 	</style>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-twipsy.js"></script>
+	<script type="text/javascript" src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-popover.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/calendar.js"></script>
 	<script type="text/javascript">
 	  $(function() {
-	    $(".datePicker").datepicker({
-          onSelect: function(dateText, inst) {
-          /* Just hardcode this for now.  Could be more elegant. */
-          $("#id_startTime").focus();
-        },
-      });
-      $("#id_location").autocomplete({
-        source: [{{locationStr|safe}}],
-        minLength: 0,
-      });
-	  $("input, textarea").bind("focus", function(event, ui) {
-      var txt = "";
-    if (this.id === "id_title") {
-      txt = "<p>Give a short title to the workout.</p>";
-    } else if (this.id === "id_startDate") {
-      txt = "<p>Set the date for this workout.</p>";
-    } else if (this.id === "id_startTime") {
-      txt = "<p>Set the time when the workout will start (the 'go' time.)</p>";
-      txt += "<p>Valid time formats are:</p>";
-      txt += "<ul>";
-      txt += "<li>7:00 am</li>";
-      txt += "<li>9:30 pm</li>";
-      txt += "<li>7:00am</li>";
-      txt += "<li>9:30pm</li>";
-      txt += "<li>7am</li>";
-      txt += "<li>9pm</li>";
-      txt += "<li>7:00</li>";
-      txt += "<li>21:30</li>";
-      txt += "</ul>"
-    } else if (this.id === "id_location") {
-      txt = "<p>Set the location for the workout.  You can choose from one of the standard locations or specify one of your own.</p>";
-      txt += "<p>The standard location choices are:</p>";
-      txt += "<ul>";
-      {% for loc in locations %}
-        txt += "<b><li>{{loc.name}}</li></b>{{loc.description}}";
+        $("#id_location").autocomplete({
+          source: [{{locationStr|safe}}],
+          minLength: 0,
+        });
+	  locStr = "";
+	  {% for loc in locations %}
+        locStr += "<b><li>{{loc.name}}</li></b>{{loc.description}}";
       {% endfor %}
-      $(this).autocomplete("search");
-    } else if (this.id === "id_warmupTime") {
-      txt = "<p>Set the time when the warmup for the workout will start.</p>";
-      txt += '<p style="color: #c00;">This is optional.</p>';
-      txt += "<p>Valid time formats are:</p>";
-      txt += "<ul>";
-      txt += "<li>7:00 am</li>";
-      txt += "<li>9:30 pm</li>";
-      txt += "<li>7:00am</li>";
-      txt += "<li>9:30pm</li>";
-      txt += "<li>7am</li>";
-      txt += "<li>9pm</li>";
-      txt += "<li>7:00</li>";
-      txt += "<li>21:30</li>";
-      txt += "</ul>"
-    } else if (this.id === "id_description") {
-      txt = "<p>Set any details related to this workout, such as pacing, route, etc.</p>";
-    }
-    $("#explain").html(txt);
-  });
-  $("input[type='text']:first").focus();
-});
+	
+	  buildEdit(locStr);
+	  });
 	</script>
   </head>
   <body>
 	{% include "workouts/topbar.html" with active="edit" %}
 	<div class="container">
 	  <div class="content">
-		<div class="row">
-		  <div class="span8">
-			<form
-			   {% if action == "update" %}
-			   action="/workout/{{w_id}}/update/"
-			   {% else %}
-			   action="/workout/create/"
-			   {% endif %}
-			   method="post">
-			  {% csrf_token %}
-			  <table>
-				{{ form.as_p }}
-			  </table>
-			  <input class="btn" type="submit" value="Submit" />
-			</form>
-		  </div>
-		</div>
+		<form
+		   {% if action == "update" %}
+		   action="/workout/{{w_id}}/update/"
+		   {% else %}
+		   action="/workout/create/"
+		   {% endif %}
+		   method="post">
+		  {% csrf_token %}
+		  <fieldset>
+			<legend>Workout Details</legend>
+			{% for field in form %}
+			  {% include "workouts/form_field.html" %}
+			{% endfor %}
+			<input class="btn" type="submit" value="Submit" />
+		  </fieldset>
+		</form>
 	  </div>
 	</div>
   </body>

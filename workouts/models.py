@@ -4,9 +4,9 @@ from django.db import models
 from datetime import date, time
 
 class Workout(models.Model):
-    startDate = models.DateField()
-    startTime = models.TimeField()
-    warmupTime = models.TimeField(blank=True, null=True)
+    startDate = models.DateField("Date")
+    startTime = models.TimeField("Go Time")
+    warmupTime = models.TimeField("Warmup Time", blank=True, null=True)
     location = models.CharField(max_length=128)
     description = models.TextField()
     organizer = models.ForeignKey(User, related_name='organzied_workouts')
