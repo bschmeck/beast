@@ -6,10 +6,16 @@ from django.template.loader import get_template
 
 from beast.workouts.models import Message, Workout
 
-from datetime import datetime
+from datetime import date, datetime
 import email
 import re
 import sys
+
+def dateStr(d):
+    if d:
+        return date.strftime(d, "%m/%d/%Y")
+
+    return "Unknown"
 
 class Command(BaseCommand):
     args = ''
@@ -73,20 +79,23 @@ class Command(BaseCommand):
         
         # Process the body of the message, looking for beast commands
         # Only do this if the user exists
+        # Don't forward BEAST commands to the mailing list
         foundOp = False
         if user and body:
             for line in body.splitlines():
                 if line.startswith("[BEAST] "):
                     self.beastOp(workout, user, line)
                     foundOp = True
+        if foundOp:
+            return
         
         if body:
             msgText = body
         else:
             msgText = html
 
-        # Save the message, if we know the sender and it wasn't a BeastOp email
-        if user and not foundOp:
+        # Save the message, if we know the sender
+        if user:
             m = Message(msgType="MAIL", workout=workout, text=msgText, sender=user, msgDate=datetime.now())
             m.save()
 
@@ -94,10 +103,10 @@ class Command(BaseCommand):
         subj = "Message About Workout %s on %s" % (workout.title, str(workout.startDate))
         fromAddr = msg['To']
         toAddrs = workout.confirmed.values_list('email', flat=True) | workout.interested.values_list('email', flat=True)
-        body = get_template('workouts/workout_notify_msg.email').render(Context({'msgDate': msg.msgDate,
+        body = get_template('workouts/workout_notify_msg.email').render(Context({'dateStr': dateStr(m.msgDate),
                                                                                  'sender': user if user else fromAddr,
                                                                                  'msgText': msgText}))
         conn = mail.get_connection()
         messages = []
-        messages.append(mail.EmailMessage(subj, msgText, fromAddr, toAddrs))
+        messages.append(mail.EmailMessage(subj, body, fromAddr, toAddrs))
         conn.send_messages(messages)
