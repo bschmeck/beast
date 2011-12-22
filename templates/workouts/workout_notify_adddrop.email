@@ -1,0 +1,5 @@
+The following change occurred to the workout "{{workout.title}}" on BEAST for {{workout.startDateStr}}:
+
+{{changeMsg.text}}
+
+BEAST

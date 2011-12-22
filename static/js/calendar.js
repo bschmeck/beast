@@ -94,6 +94,10 @@ function buildEdit(locStr) {
 	    title: 'Workout Description',
 	    content: "Set any details related to this workout, such as pacing, route, etc."
 	});
+	$("#id_notify_organizer").attr({
+	    title: 'Add/Drop Notify',
+		content: "Receive an email whenever anyone joins or drops the workout.",
+	});
 
     $("#id_location").bind("focus", function(event, ui) {
       $(this).autocomplete("search");

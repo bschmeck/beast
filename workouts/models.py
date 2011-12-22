@@ -14,7 +14,8 @@ class Workout(models.Model):
     interested = models.ManyToManyField(User, related_name='possible_workouts', blank=True, null=True)
     tags = models.ManyToManyField('Tag', blank=True, null=True)
     title = models.CharField(max_length=50)
-
+    notify_organizer = models.BooleanField("Notify Me On Add/Drop", blank=True, default=False)
+    
     def __unicode__(self):
         return str(self.startDate) + " - " + self.title
 
@@ -32,6 +33,7 @@ class Tag(models.Model):
 
 class UserProfile(models.Model):
     notify = models.BooleanField(default=True)
+    notify_adddrop = models.BooleanField(default=False, blank=True)
     displayName = models.CharField(max_length=50)
     weekStart = models.IntegerField()
     user = models.OneToOneField(User)

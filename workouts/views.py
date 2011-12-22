@@ -23,19 +23,36 @@ def workoutNotify(workout, action, changeMsg=None):
     if action == "Modified" or action == "Deleted":
         toAddrs = workout.confirmed.values_list('email', flat=True) | workout.interested.values_list('email', flat=True)
         msg = get_template('workouts/workout_notify_update.email').render(Context({
-                    'workout': workout,
-                    'changeMsg': changeMsg,
-                    'action': action.lower(),
-                    'url': 'http://beast.shmk.org',
-                    'command_url': 'http://beast.shmk.org/faq#commands',
-                    }))
-    else:
+            'workout': workout,
+            'changeMsg': changeMsg,
+            'action': action.lower(),
+            'url': 'http://beast.shmk.org',
+            'command_url': 'http://beast.shmk.org/faq#commands',
+            }))
+    elif action == "Joined":
+        toAddrs = list(workout.confirmed.filter(userprofile__notify_adddrop=True).values_list('email', flat=True))
+        toAddrs.extend(list(workout.interested.filter(userprofile__notify_adddrop=True).values_list('email', flat=True)))
+        if workout.notify_organizer and workout.organizer.email not in toAddrs:
+            toAddrs.append(workout.organizer.email)
+
+        msg = get_template('workouts/workout_notify_adddrop.email').render(Context({
+            'workout': workout,
+            'changeMsg': changeMsg
+            }))
+    elif action == "Created":
         toAddrs = UserProfile.objects.filter(notify=True).values_list('user__email', flat=True)
         msg = get_template('workouts/workout_notify_create.email').render(Context({
-                    'workout': workout,
-                    'url': 'http://beast.shmk.org',
-                    'command_url': 'http://beast.shmk.org/faq#commands',
-                    }))
+            'workout': workout,
+            'url': 'http://beast.shmk.org',
+            'command_url': 'http://beast.shmk.org/faq#commands',
+            }))
+    else:
+        raise ArgumentException("Unknown action %s" % action)
+
+    # Don't bother sending mail if we don't have any addresses
+    if not toAddrs:
+        return
+
     subj = "BEAST Workout %s -- %s -- %s" % (action, workout.title, str(workout.startDate))
     fromAddr = workout.addr()
 
@@ -345,7 +362,8 @@ def joinWorkout(request, w_id):
     if changeStr:
         m = Message(msgType="CHANGE", workout=w, text=changeStr, sender=request.user, msgDate=datetime.now())
         m.save()
-
+        workoutNotify(w, "Joined", m)
+        
     confirmed = map(lambda u: u.get_profile().displayName, w.confirmed.all())
     interested = map(lambda u: u.get_profile().displayName, w.interested.all())
     showJoin = not request.user in w.confirmed.all()

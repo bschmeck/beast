@@ -22,7 +22,8 @@ class WorkoutForm(forms.ModelForm):
             'startTime',
             'location',
             'warmupTime',
-            'description']
+            'description',
+            'notify_organizer']
     startTime = forms.TimeField(input_formats=("%I:%M %p",
                                          "%I:%M%p",
                                          "%I %p",
@@ -60,7 +61,8 @@ class RegistrationForm(forms.Form):
                                            (5, "Saturday")), label='First Day Of The Week')
                                            
     notify = forms.BooleanField(required=False, initial=True, label='Notify Me Of New Workouts')
-
+    notify_adddrop = forms.BooleanField(required=False, initial=False, label='Notify Me As People Add/Drop Workouts I\'m Running')
+    
     def clean_email(self):
         email = self.cleaned_data['email']
         if User.objects.filter(email=email).exists():
@@ -89,7 +91,8 @@ class AccountInfoForm(forms.ModelForm):
         self.fields.keyOrder = [
             'displayName',
             'weekStart',
-            'notify']
+            'notify',
+            'notify_adddrop']
 
     displayName = forms.CharField(max_length=30, label='Name To Display')
     weekStart = forms.ChoiceField(choices=((6, 'Sunday'),
@@ -101,3 +104,4 @@ class AccountInfoForm(forms.ModelForm):
                                            (5, "Saturday")), label='First Day Of The Week')
                                            
     notify = forms.BooleanField(required=False, initial=True, label='Notify Me Of New Workouts')
+    notify_adddrop = forms.BooleanField(required=False, initial=False, label='Notify Me As People Add/Drop Workouts I\'m Running')
