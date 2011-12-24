@@ -17,6 +17,7 @@
 {% endif %}
 <tr><td class="desc">Description</td><td>{{workout.description|linebreaksbr}}</td></tr>
 <tr><td class="desc">Organizer</td><td>{{workout.organizer.get_profile.displayName}} ({{workout.organizer.email}})</td></tr>
+<tr><td class="desc">Email List</td><td><a href="mailto:{{workout.addr}}" id="workoutAddr" data-placement='right' rel='twipsy' title="Send email to this address to reach all interested and confirmed runners.">{{workout.addr}}</a></td></tr>
 <tr><td class="desc">Confirmed</td><td id="confirmed">{% for u in confirmed %} {{u}}, {% endfor %}</td></tr>
 <tr><td class="desc">Interested</td><td id="interested">{% for u in interested %} {{u}}, {% endfor %}</td></tr>
 </table>
