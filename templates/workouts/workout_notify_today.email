@@ -1,0 +1,13 @@
+Your workout "{{workout.title}}" is today.  The details of the workout are below:
+
+Title: {{workout.title}}
+Date: {{workout.startDateStr}}
+Location: {{workout.location}}
+"Go" Time: {{workout.startTime}}
+Warmup: {% firstof workout.warmupTime "None" %}
+Description: {{workout.description}}
+
+Confirmed: {{conf_list}}
+Interested: {{maybe_list}}
+
+BEAST
