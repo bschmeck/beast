@@ -13,7 +13,7 @@ class EmailBackend(BasicBackend):
         # Try to use an email address, if given one
         if email_re.search(username):
             try:
-                user = User.objects.get(email=username)
+                user = User.objects.get(email__iexact=username)
             except User.DoesNotExist:
                 return None
         else:
