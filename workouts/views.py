@@ -116,7 +116,7 @@ def deleteWorkout(request, w_id):
             msg.msgType = 'CHANGE'
             msg.workout = w
             msg.sender = request.user
-            msg.msgDate = datetime.now()
+            msg.msgDate = datetime.now() + timedelta(hours=1)
             msg.text = "This workout has been deleted."
             workoutNotify(w, "Deleted", msg)
             w.delete()
@@ -161,7 +161,7 @@ def updateWorkout(request, w_id):
                     msg.msgType = 'CHANGE'
                     msg.workout = w
                     msg.sender = request.user
-                    msg.msgDate = datetime.now()
+                    msg.msgDate = datetime.now() + timedelta(hours=1)
                     msg.text = changeText
                     msg.save()
 
@@ -360,7 +360,7 @@ def joinWorkout(request, w_id):
         changeStr = "%s dropped the workout" % request.user.get_profile().displayName
 
     if changeStr:
-        m = Message(msgType="CHANGE", workout=w, text=changeStr, sender=request.user, msgDate=datetime.now())
+        m = Message(msgType="CHANGE", workout=w, text=changeStr, sender=request.user, msgDate=datetime.now()+timedelta(hours=1))
         m.save()
         workoutNotify(w, "Joined", m)
         

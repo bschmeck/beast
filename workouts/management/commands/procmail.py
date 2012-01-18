@@ -38,7 +38,7 @@ class Command(BaseCommand):
             changeStr = "%s dropped the workout" % user.get_profile().displayName
 
         if changeStr:
-            m = Message(msgType="CHANGE", workout=workout, text=changeStr, sender=user, msgDate=datetime.now())
+            m = Message(msgType="CHANGE", workout=workout, text=changeStr, sender=user, msgDate=datetime.now()+timedelta(hours=1))
             m.save()
 
             
@@ -96,7 +96,7 @@ class Command(BaseCommand):
 
         # Save the message, if we know the sender
         if user:
-            m = Message(msgType="MAIL", workout=workout, text=msgText, sender=user, msgDate=datetime.now())
+            m = Message(msgType="MAIL", workout=workout, text=msgText, sender=user, msgDate=datetime.now()+timedelta(hours=1))
             m.save()
 
         # Finally, forward it on to everyone signed up for the workout
