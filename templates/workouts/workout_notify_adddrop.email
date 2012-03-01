@@ -1,5 +1,5 @@
-The following change occurred to the workout "{{workout.title}}" on BEAST for {{workout.startDateStr}}:
+{%autoescape off%}The following change occurred to the workout "{{workout.title}}" on BEAST for {{workout.startDateStr}}:
 
 {{changeMsg.text}}
 
-BEAST
+BEAST{%endautoescape%}

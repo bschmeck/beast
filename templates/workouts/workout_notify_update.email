@@ -1,4 +1,4 @@
-{{changeMsg.sender.get_profile.displayName}} has {{action}} the workout "{{workout.title}}" on BEAST for {{workout.startDateStr}}.
+{% autoescape off %}{{changeMsg.sender.get_profile.displayName}} has {{action}} the workout "{{workout.title}}" on BEAST for {{workout.startDateStr}}.
 
 This change occurred at {{changeMsg.msgDate}}.  The details of the change are below.
 
@@ -12,4 +12,4 @@ Alternatively, you can change your plans for this workout by replying to this em
 
 Mail sent to this address ({{workout.addr}}) will be automatically forwarded to all confirmed and possible runners.
 {% endif %}
-BEAST
+BEAST{%endautoescape %}

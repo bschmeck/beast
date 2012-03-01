@@ -1,4 +1,4 @@
-Your workout "{{workout.title}}" is today.  The details of the workout are below:
+{% autoescape off %}Your workout "{{workout.title}}" is today.  The details of the workout are below:
 
 Title: {{workout.title}}
 Date: {{workout.startDateStr}}
@@ -10,4 +10,4 @@ Description: {{workout.description}}
 Confirmed: {{conf_list}}
 Interested: {{maybe_list}}
 
-BEAST
+BEAST{% endautoescape %}
