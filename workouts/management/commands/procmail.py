@@ -6,7 +6,7 @@ from django.template.loader import get_template
 
 from beast.workouts.models import Message, Workout
 
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import email
 import re
 import sys
@@ -95,17 +95,18 @@ class Command(BaseCommand):
             msgText = html
 
         # Save the message, if we know the sender
+        msgDate = datetime.now()+timedelta(hours=1)
         if user:
-            m = Message(msgType="MAIL", workout=workout, text=msgText, sender=user, msgDate=datetime.now()+timedelta(hours=1))
+            m = Message(msgType="MAIL", workout=workout, text=msgText, sender=user, msgDate=msgDate)
             m.save()
 
         # Finally, forward it on to everyone signed up for the workout
         subj = "Message About Workout %s on %s" % (workout.title, str(workout.startDate))
-        fromAddr = msg['To']
         toAddrs = workout.confirmed.values_list('email', flat=True) | workout.interested.values_list('email', flat=True)
-        body = get_template('workouts/workout_notify_msg.email').render(Context({'dateStr': dateStr(m.msgDate),
+        body = get_template('workouts/workout_notify_msg.email').render(Context({'dateStr': dateStr(msgDate),
                                                                                  'sender': user if user else fromAddr,
                                                                                  'msgText': msgText}))
+        fromAddr = msg['To']
         conn = mail.get_connection()
         messages = []
         messages.append(mail.EmailMessage(subj, body, fromAddr, toAddrs))
