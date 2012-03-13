@@ -41,6 +41,10 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.displayName
 
+    def js_weekStart(self):
+        # weekStart has Mon == 0, Tues == 1, etc
+        # The jQuery datepicker needs Sun == 0, Mon == 1, etc
+        return (self.weekStart + 1) % 7
 class Message(models.Model):
     MESSAGE_CHOICES = (
         ("MAIL", "E-mail"),

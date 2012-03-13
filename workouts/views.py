@@ -203,7 +203,8 @@ def createWorkout(request):
                               {'form': form,
                                'action': 'create',
                                'locationStr': locationStr,
-                               'locations': locations},
+                               'locations': locations,
+                               'firstDay': request.user.get_profile().js_weekStart()},
                               context_instance=RequestContext(request))
 
 @user_passes_test(lambda u: u.is_anonymous)
