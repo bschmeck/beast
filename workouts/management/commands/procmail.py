@@ -104,7 +104,7 @@ class Command(BaseCommand):
         subj = "Message About Workout %s on %s" % (workout.title, str(workout.startDate))
         toAddrs = workout.confirmed.values_list('email', flat=True) | workout.interested.values_list('email', flat=True)
         body = get_template('workouts/workout_notify_msg.email').render(Context({'dateStr': dateStr(msgDate),
-                                                                                 'sender': user if user else fromAddr,
+                                                                                 'sender': user.get_profile().displayName if user else fromAddr,
                                                                                  'msgText': msgText}))
         fromAddr = msg['To']
         conn = mail.get_connection()
