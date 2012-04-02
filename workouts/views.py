@@ -29,7 +29,7 @@ def workoutNotify(workout, action, changeMsg=None):
             'url': 'http://beast.shmk.org',
             'command_url': 'http://beast.shmk.org/faq#commands',
             }))
-    elif action == "Joined":
+    elif action == "Joined" or action == "Dropped":
         toAddrs = list(workout.confirmed.filter(userprofile__notify_adddrop=True).values_list('email', flat=True))
         toAddrs.extend(list(workout.interested.filter(userprofile__notify_adddrop=True).values_list('email', flat=True)))
         if workout.notify_organizer and workout.organizer.email not in toAddrs:
@@ -47,7 +47,7 @@ def workoutNotify(workout, action, changeMsg=None):
             'command_url': 'http://beast.shmk.org/faq#commands',
             }))
     else:
-        raise ArgumentException("Unknown action %s" % action)
+        raise ValueError("Unknown action %s" % action)
 
     # Don't bother sending mail if we don't have any addresses
     if not toAddrs:
@@ -348,14 +348,17 @@ def joinWorkout(request, w_id):
 
     changeStr = None
     if action == "join":
+        action = "Joined"
         request.user.confirmed_workouts.add(w)
         request.user.possible_workouts.remove(w)
         changeStr = "%s joined the workout" % request.user.get_profile().displayName
     elif action == "maybe":
+        action = "Joined"
         request.user.confirmed_workouts.remove(w)
         request.user.possible_workouts.add(w)
         changeStr = "%s is a maybe for the workout" % request.user.get_profile().displayName
     else:
+        action = "Dropped"
         request.user.confirmed_workouts.remove(w)
         request.user.possible_workouts.remove(w)
         changeStr = "%s dropped the workout" % request.user.get_profile().displayName
@@ -363,7 +366,7 @@ def joinWorkout(request, w_id):
     if changeStr:
         m = Message(msgType="CHANGE", workout=w, text=changeStr, sender=request.user, msgDate=datetime.now()+timedelta(hours=1))
         m.save()
-        workoutNotify(w, "Joined", m)
+        workoutNotify(w, action, m)
         
     confirmed = map(lambda u: u.get_profile().displayName, w.confirmed.all())
     interested = map(lambda u: u.get_profile().displayName, w.interested.all())
