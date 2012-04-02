@@ -5,7 +5,7 @@ Title: {{workout.title}}
 Date: {{workout.startDateStr}}
 Location: {{workout.location}}
 "Go" Time: {{workout.startTime}}
-Warmup: {% firstof workout.warmupTime "None" %}
+Warmup: {% firstof workout.warmupTime|time "None" %}
 Description: {{workout.description}}
 ----
 
