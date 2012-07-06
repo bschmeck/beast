@@ -53,7 +53,7 @@ def workoutNotify(workout, action, changeMsg=None):
     if not toAddrs:
         return
 
-    subj = "BEAST Workout %s -- %s -- %s" % (action, workout.title, str(workout.startDate))
+    subj = "BEAST Workout %s -- %s -- %s" % (action, workout.title, workout.startDate.strftime("%A %Y-%m-%d"))
     fromAddr = workout.addr()
 
     messages = []
