@@ -1,4 +1,4 @@
-<div class="cell">
+<div class="cell {% if day.in_past %}in_past{% endif %}">
   <div class="date">{{day.dateStr}}</div>
   {% for workout, mine in day.workouts %}
     {% if mine %}

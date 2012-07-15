@@ -6,6 +6,9 @@
   min-height: 150px;
   float: left;
 }
+.cell.in_past {
+  background: #F3F3F3;
+}
 .date {
   background: #5882fa;
   font-size: 1.2em;

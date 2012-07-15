@@ -109,6 +109,7 @@ function buildEdit(locStr) {
 
 function buildCalendar() {
     configAjax();
+    $(".cell.in_past").height($("#week_1").css('height'));
     $(".text")
         .bind("mouseover mouseout", function(event) {
             $(this).toggleClass("highlight", event.type === "mouseover");

@@ -252,9 +252,10 @@ def genUserName():
             return ret
 
 class CalendarDay:
-    def __init__(self, dte):
+    def __init__(self, dte, in_past):
         self.dte = dte
         self.workouts = []
+        self.in_past = in_past
 
     def addWorkout(self, w, highlight):
         self.workouts.append((w, highlight))
@@ -273,9 +274,6 @@ def calendar(request):
     # Back up the correct number of days to reach the start day
     adj = ((d.weekday() - weekStart) + 7) % 7
     d -= timedelta(days=adj)
-    # Back up a day at a time until we hit the correct start day
-    #while d.weekday() != weekStart:
-    #    d -= timedelta(days=1)
 
     days = []
     daysDone = False
@@ -286,7 +284,8 @@ def calendar(request):
         while True:
             if not daysDone:
                 days.append(d.strftime('%A'))
-            c = CalendarDay(d)
+            in_past = d < datetime.now().date()
+            c = CalendarDay(d, in_past=in_past)
             for workout in Workout.objects.filter(startDate=d).order_by("startTime"):
                 if request.user.is_authenticated():
                     highlight = request.user in workout.confirmed.all() or request.user in workout.interested.all()
