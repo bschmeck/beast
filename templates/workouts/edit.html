@@ -67,6 +67,18 @@
 	
 	  buildEdit(locStr);
 	  $(".datePicker").datepicker("option", "firstDay", {{firstDay}});
+
+	  $('#workoutForm').bind('submit',function(e){
+        var $form = $('#workoutForm');
+
+        if ($form.data('submitted') === true) {
+          // Previously submitted - don't submit again
+          e.preventDefault();
+        } else {
+          // Mark it so that the next submit can be ignored
+          $form.data('submitted', true);
+        }
+      });
 	  });
 	</script>
   </head>
@@ -74,7 +86,7 @@
 	{% include "workouts/topbar.html" with active="edit" %}
 	<div class="container">
 	  <div class="content">
-		<form
+		<form id="workoutForm"
 		   {% if action == "update" %}
 		   action="/workout/{{w_id}}/update/"
 		   {% else %}
@@ -87,7 +99,7 @@
 			{% for field in form %}
 			  {% include "workouts/form_field.html" %}
 			{% endfor %}
-			<input class="btn" type="submit" value="Submit" />
+			<input class="btn" id="submissionButton" type="submit" value="Submit" />
 		  </fieldset>
 		</form>
 	  </div>
