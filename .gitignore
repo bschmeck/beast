@@ -2,6 +2,7 @@
 s_pub
 .pub/*
 localsettings.py
+env/*
 static/favicon.ico
 static/js/bootstrap-*
 static/js/jquery-*
