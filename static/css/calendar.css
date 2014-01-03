@@ -30,6 +30,12 @@
   color: #fff;
   text-align: center;
 }
+.dayOfWeek.first {
+  border-radius: 6px 0 0 0;
+}
+.dayOfWeek.last {
+  border-radius: 0 6px 0 0;
+}
 .atbottom {
   position: absolute;
   bottom: 0px;

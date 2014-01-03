@@ -61,7 +61,7 @@
 		<div class="atbottom">
 		  <div class="daySpacer">&nbsp;</div>
 		  {% for day in days %}
-		  <div class="dayOfWeek">{{day}}</div>
+		  <div class="dayOfWeek {% if forloop.first %}first{%endif%}{%if forloop.last%}last{%endif%}">{{day}}</div>
 		  {% endfor %}
 		  <div class="daySpacer">&nbsp;</div>
 		  <div class="clear"></div>
