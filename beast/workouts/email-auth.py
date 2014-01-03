@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from django.core.validators import email_re
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 
 class BasicBackend:
     def get_user(self, user_id):
@@ -11,7 +12,7 @@ class BasicBackend:
 class EmailBackend(BasicBackend):
     def authenticate(self, username=None, password=None):
         # Try to use an email address, if given one
-        if email_re.search(username):
+        if self.valid_email(username):
             try:
                 user = User.objects.get(email__iexact=username)
             except User.DoesNotExist:
@@ -25,3 +26,10 @@ class EmailBackend(BasicBackend):
         if user.check_password(password):
             return user
         return None
+
+    def valid_email(self, email):
+        try:
+            validate_email(email)
+            return True
+        except ValidationError:
+            return False

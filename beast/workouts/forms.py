@@ -84,7 +84,7 @@ class RegistrationForm(forms.Form):
 class AccountInfoForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        exclude = ('user')
+        exclude = ('user',)
 
     def __init__(self, *args, **kw):
         super(forms.ModelForm, self).__init__(*args, **kw)
