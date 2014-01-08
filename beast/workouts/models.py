@@ -15,7 +15,7 @@ class Workout(models.Model):
     tags = models.ManyToManyField('Tag', blank=True, null=True)
     title = models.CharField(max_length=50)
     notify_organizer = models.BooleanField("Notify Me On Add/Drop", blank=True, default=False)
-    city = models.ForeignKey('City', related_name='workouts', null=True)
+    city = models.ForeignKey('City', related_name='workouts', null=True, on_delete=models.SET_NULL)
     
     def __unicode__(self):
         return str(self.startDate) + " - " + self.title
@@ -38,7 +38,7 @@ class UserProfile(models.Model):
     displayName = models.CharField(max_length=50)
     weekStart = models.IntegerField()
     user = models.OneToOneField(User)
-    primary_city = models.ForeignKey('City', null=True)
+    primary_city = models.ForeignKey('City', null=True, on_delete=models.SET_NULL)
     cities = models.ManyToManyField('City', related_name='users', blank=True)
     
     def __unicode__(self):
