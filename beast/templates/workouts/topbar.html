@@ -5,11 +5,10 @@
         <div class="container">
           <a class="brand" href="/">B.E.A.S.T.</a>
           <ul class="nav">
-            <li {% if active == "calendar" %}class="active"{% endif %}><a href="/">Calendar</a></li>
 {% if active == "calendar" %}
-			<li class="dropdown" data-dropdown="dropdown">
+			<li class="dropdown active" data-dropdown="dropdown">
 			  <a href="#" class="dropdown-toggle">
-				{{ city.name }}
+				Calendar <span id="calendar_city_name">({{ city.name }})</span>
 				<b class="caret"></b>
 			  </a>
 			  <ul class="dropdown-menu">
@@ -18,6 +17,8 @@
 				{% endfor %}
 			  </ul>
 			</li>
+{% else %}
+            <li><a href="/">Calendar</a></li>
 {% endif %}
 {% if user.is_authenticated %}
 			<li {% if active == "account" %}class="active"{% endif %}><a href="/account">Account</a></li>
