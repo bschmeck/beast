@@ -289,7 +289,7 @@ def calendar(request):
                 days.append(d.strftime('%A'))
             in_past = d < datetime.now().date()
             c = CalendarDay(d, in_past=in_past)
-            for workout in Workout.objects.filter(startDate=d).order_by("startTime"):
+            for workout in city.workouts.filter(startDate=d).order_by("startTime"):
                 if request.user.is_authenticated():
                     highlight = request.user in workout.confirmed.all() or request.user in workout.interested.all()
                 else:
