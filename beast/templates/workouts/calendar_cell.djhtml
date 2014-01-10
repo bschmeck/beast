@@ -6,7 +6,7 @@
     {% else %}
       <div class="text" id="workout_{{workout.id}}">
     {% endif %}
-      {% include "workouts/calendar_cell_text.html" %}
+      {% include "workouts/calendar_cell_text.djhtml" %}
     </div>
   {% endfor %}
 </div>

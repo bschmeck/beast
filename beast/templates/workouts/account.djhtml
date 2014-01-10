@@ -56,14 +56,14 @@
 	</style>
   </head>
   <body>
-	{% include "workouts/topbar.html" with active="account" %}
+	{% include "workouts/topbar.djhtml" with active="account" %}
 	<div class="container-fluid">
 	  <div id="accountInfo" class="sidebar">
 		<h3>Account Settings</h3>
 		<form id="updateForm" class="form-stacked">
 		  {% csrf_token %}
 		  {% for field in form %}
-		    {% include "workouts/form_field.html" %}
+		    {% include "workouts/form_field.djhtml" %}
 		  {% endfor %}
 		  <button class="btn primary" id="updateInfo">Update</button>
 		</form>

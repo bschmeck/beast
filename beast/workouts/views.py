@@ -96,7 +96,7 @@ def account(request):
     else:
         w = request.user.confirmed_workouts.filter(startDate__gte=today)    
         f = AccountInfoForm(instance=u)
-        return render_to_response('workouts/account.html',
+        return render_to_response('workouts/account.djhtml',
                                   {'form': f,
                                    'workouts': w},
                                   context_instance=RequestContext(request))
@@ -173,7 +173,7 @@ def updateWorkout(request, w_id):
         form = WorkoutForm(instance=w)
     locations = Location.objects.order_by('name')
     locationStr = str(','.join(map(lambda n: '"' + n + '"', locations.values_list('name', flat=True))))
-    return render_to_response('workouts/edit.html',
+    return render_to_response('workouts/edit.djhtml',
                               {'form': form,
                                'action': 'update',
                                'w_id': w_id,
@@ -199,7 +199,7 @@ def createWorkout(request):
 
     locations = Location.objects.order_by('name')
     locationStr = str(','.join(map(lambda n: '"' + n + '"', locations.values_list('name', flat=True))))
-    return render_to_response('workouts/edit.html',
+    return render_to_response('workouts/edit.djhtml',
                               {'form': form,
                                'action': 'create',
                                'locationStr': locationStr,
@@ -238,7 +238,7 @@ def accountCreate(request):
             return HttpResponseRedirect("/")
     else:
         form = RegistrationForm()
-    return render_to_response('registration/register.html',
+    return render_to_response('registration/register.djhtml',
                               {'form': form},
                               context_instance=RequestContext(request))
 
@@ -301,7 +301,7 @@ def calendar(request):
                 daysDone = True
                 break
         ret.append(w)
-    return render_to_response('workouts/calendar.html',
+    return render_to_response('workouts/calendar.djhtml',
                               {'days': days,
                                'weeks': ret,
                                'city': city,
@@ -330,7 +330,7 @@ def getWorkout(request, w_id):
         showDrop = False
         canUpdate = False
 
-    return render_to_response('workouts/workout.html',
+    return render_to_response('workouts/workout.djhtml',
                               {'workout': w,
                                'confirmed': confirmed,
                                'interested': interested,
@@ -377,7 +377,7 @@ def joinWorkout(request, w_id):
     showJoin = not request.user in w.confirmed.all()
     showMaybe = not request.user in w.interested.all()
     showDrop = not (showJoin and showMaybe)
-    cellText = get_template('workouts/calendar_cell_text.html').render(Context({'workout': w}))
+    cellText = get_template('workouts/calendar_cell_text.djhtml').render(Context({'workout': w}))
     ret = {"confirmed": ",".join(confirmed),
            "interested": ",".join(interested),
            "showJoin": showJoin,
@@ -387,6 +387,6 @@ def joinWorkout(request, w_id):
     return HttpResponse(json.dumps(ret), "application/javascript")
 
 def faq(request):
-    return render_to_response('workouts/faq.html',
+    return render_to_response('workouts/faq.djhtml',
                               {},
                               context_instance=RequestContext(request))
