@@ -3,9 +3,3 @@ s_pub
 .pub/*
 localsettings.py
 env/*
-static/favicon.ico
-static/js/bootstrap-*
-static/js/jquery-*
-static/development-bundle/*
-static/css/bootstrap*
-static/css/smoothness/*
