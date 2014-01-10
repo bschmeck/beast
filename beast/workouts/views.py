@@ -17,7 +17,7 @@ import string
 import sys
 
 from forms import AccountInfoForm, RegistrationForm, WorkoutForm
-from models import Location, Message, UserProfile, Workout
+from models import City, Location, Message, UserProfile, Workout
 
 def workoutNotify(workout, action, changeMsg=None):
     if action == "Modified" or action == "Deleted":
@@ -266,9 +266,12 @@ class CalendarDay:
 def calendar(request):
     if request.user.is_authenticated():
         weekStart = request.user.get_profile().weekStart
+        city = request.user.get_profile().primary_city
     else:
         weekStart = 6
-
+        city = City.objects.first()
+    cities = City.objects.exclude(id=city.id)
+    
     d = datetime.now().date()
     # weekday() gives Monday as 0, Sunday as 6
     # Back up the correct number of days to reach the start day
@@ -300,7 +303,9 @@ def calendar(request):
         ret.append(w)
     return render_to_response('workouts/calendar.html',
                               {'days': days,
-                               'weeks': ret},
+                               'weeks': ret,
+                               'city': city,
+                               'cities': cities},
                               context_instance=RequestContext(request))
 
 def getWorkout(request, w_id):

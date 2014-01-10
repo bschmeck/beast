@@ -6,6 +6,19 @@
           <a class="brand" href="/">B.E.A.S.T.</a>
           <ul class="nav">
             <li {% if active == "calendar" %}class="active"{% endif %}><a href="/">Calendar</a></li>
+{% if active == "calendar" %}
+			<li class="dropdown" data-dropdown="dropdown">
+			  <a href="#" class="dropdown-toggle">
+				{{ city.name }}
+				<b class="caret"></b>
+			  </a>
+			  <ul class="dropdown-menu">
+				{% for alt_city in cities %}
+				<li><a href="#">{{alt_city.name}}</a></li>
+				{% endfor %}
+			  </ul>
+			</li>
+{% endif %}
 {% if user.is_authenticated %}
 			<li {% if active == "account" %}class="active"{% endif %}><a href="/account">Account</a></li>
 			<li {% if active == "edit" %}class="active"{% endif %}><a href="/workout/create">Create Workout</a></li>
