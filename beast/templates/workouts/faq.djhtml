@@ -42,7 +42,7 @@
 	<title>B.E.A.S.T. FAQ</title>
   </head>
   <body>
-	{% include "workouts/topbar.html" with active="faq" %}
+	{% include "workouts/topbar.djhtml" with active="faq" %}
 
 	<div class="container">
 	  <div class="content">

@@ -83,7 +83,7 @@
 	</script>
   </head>
   <body>
-	{% include "workouts/topbar.html" with active="edit" %}
+	{% include "workouts/topbar.djhtml" with active="edit" %}
 	<div class="container">
 	  <div class="content">
 		<form id="workoutForm"
@@ -97,7 +97,7 @@
 		  <fieldset>
 			<legend>Workout Details</legend>
 			{% for field in form %}
-			  {% include "workouts/form_field.html" %}
+			  {% include "workouts/form_field.djhtml" %}
 			{% endfor %}
 			<input class="btn" id="submissionButton" type="submit" value="Submit" />
 		  </fieldset>
