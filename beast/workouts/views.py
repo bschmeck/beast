@@ -270,7 +270,7 @@ def calendar(request):
     else:
         weekStart = 6
         city = City.objects.first()
-    cities = City.objects.exclude(id=city.id)
+    alt_cities = City.objects.exclude(id=city.id)
     
     d = datetime.now().date()
     # weekday() gives Monday as 0, Sunday as 6
@@ -305,7 +305,7 @@ def calendar(request):
                               {'days': days,
                                'weeks': ret,
                                'city': city,
-                               'cities': cities},
+                               'alt_cities': alt_cities},
                               context_instance=RequestContext(request))
 
 def getWorkout(request, w_id):
