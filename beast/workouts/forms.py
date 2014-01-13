@@ -91,9 +91,12 @@ class AccountInfoForm(forms.ModelForm):
         super(forms.ModelForm, self).__init__(*args, **kw)
         self.fields.keyOrder = [
             'displayName',
+            'primary_city',
             'weekStart',
             'notify',
-            'notify_adddrop']
+            'notify_adddrop',
+            'cities'
+            ]
 
     displayName = forms.CharField(max_length=30, label='Name To Display')
     weekStart = forms.ChoiceField(choices=((6, 'Sunday'),
@@ -106,3 +109,5 @@ class AccountInfoForm(forms.ModelForm):
                                            
     notify = forms.BooleanField(required=False, initial=True, label='Notify Me Of New Workouts')
     notify_adddrop = forms.BooleanField(required=False, initial=False, label='Notify Me As People Add/Drop Workouts I\'m Running')
+    primary_city = forms.ModelChoiceField(queryset=City.objects.all(), empty_label=None)
+    cities = forms.ModelMultipleChoiceField(queryset=City.objects.all(), label='Notify Me Of Workouts In These Other Cities')
