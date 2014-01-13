@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from datetime import datetime
 
-from workouts.models import UserProfile, Workout
+from workouts.models import City, UserProfile, Workout
 
 def make_custom_datefield(f):
     formfield = f.formfield()
@@ -59,6 +59,7 @@ class RegistrationForm(forms.Form):
                                            (3, "Thursday"),
                                            (4, "Friday"),
                                            (5, "Saturday")), label='First Day Of The Week')
+    primary_city = forms.ModelChoiceField(queryset=City.objects.all(), empty_label=None)
                                            
     notify = forms.BooleanField(required=False, initial=True, label='Notify Me Of New Workouts')
     notify_adddrop = forms.BooleanField(required=False, initial=False, label='Notify Me As People Add/Drop Workouts I\'m Running')

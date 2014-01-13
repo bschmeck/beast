@@ -217,7 +217,8 @@ def accountCreate(request):
             displayName = form.cleaned_data['displayName']
             notify = form.cleaned_data['notify']
             weekStart = form.cleaned_data['weekStart']
-
+            city = form.cleaned_data['primary_city']
+            
             with transaction.commit_on_success():
                 username = genUserName()
                 new_user = User.objects.create_user(username=username,
@@ -230,6 +231,7 @@ def accountCreate(request):
                 profile.displayName = displayName
                 profile.notify = notify
                 profile.weekStart = weekStart
+                profile.primary_city = city
                 profile.save()
 
             user = auth.authenticate(username=username, password=pwd)
