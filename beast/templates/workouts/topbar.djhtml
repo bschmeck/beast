@@ -5,21 +5,7 @@
         <div class="container">
           <a class="brand" href="/">B.E.A.S.T.</a>
           <ul class="nav">
-{% if active == "calendar" %}
-			<li class="dropdown active" data-dropdown="dropdown">
-			  <a href="#" class="dropdown-toggle">
-				Calendar <span id="calendar_city_name">({{ city.name }})</span>
-				<b class="caret"></b>
-			  </a>
-			  <ul class="dropdown-menu">
-				{% for alt_city in alt_cities %}
-				<li><a href="#">{{alt_city.name}}</a></li>
-				{% endfor %}
-			  </ul>
-			</li>
-{% else %}
-            <li><a href="/">Calendar</a></li>
-{% endif %}
+            <li {% if active == "calendar" %}class="active"{% endif %}><a href="/">Calendar</a></li>
 {% if user.is_authenticated %}
 			<li {% if active == "account" %}class="active"{% endif %}><a href="/account">Account</a></li>
 			<li {% if active == "edit" %}class="active"{% endif %}><a href="/workout/create">Create Workout</a></li>

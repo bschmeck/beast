@@ -59,6 +59,11 @@
 	{% include "workouts/topbar.djhtml" with active="calendar" %}
 	<div id="calHeader">
 	  <div class="container">
+		<div id="city_picker">
+		  <h1 style="margin-bottom: 0px">{{city.name}}</h1>
+		  <a href="#"><i>Click here to change city</i></a>
+		</div>
+		
 		<div class="atbottom">
 		  <div class="daySpacer">&nbsp;</div>
 		  {% for day in days %}
