@@ -14,6 +14,7 @@ urlpatterns = patterns(
     
     # Examples:
     url(r'^$', 'workouts.views.calendar'),
+    url(r'^city/(?P<slug>[a-z\-]+)/$', 'workouts.views.calendar'),
     url(r'^workout/(?P<w_id>\d+)/$', 'workouts.views.getWorkout'),
     url(r'^workout/(?P<w_id>\d+)/action/$', 'workouts.views.joinWorkout'),
     url(r'^workout/(?P<w_id>\d+)/delete/$', 'workouts.views.deleteWorkout'),

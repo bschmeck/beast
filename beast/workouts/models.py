@@ -69,7 +69,11 @@ class Location(models.Model):
 
 class City(models.Model):
     name = models.CharField(max_length=256, unique=True)
-        
+    slug = models.CharField(max_length=256, unique=True)
+
+    def url(self):
+        return "/city/%s" % (self.slug)
+    
     def __unicode__(self):
         return self.name
 

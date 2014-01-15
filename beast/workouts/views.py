@@ -265,13 +265,18 @@ class CalendarDay:
     def dateStr(self):
         return datetime.strftime(self.dte, "%m/%d")
 
-def calendar(request):
+def calendar(request, slug=None):
+    city = None
+    if slug:
+        city = get_object_or_404(City, slug=slug)
     if request.user.is_authenticated():
         weekStart = request.user.get_profile().weekStart
-        city = request.user.get_profile().primary_city
+        if not city:
+            city = request.user.get_profile().primary_city
     else:
         weekStart = 6
-        city = City.objects.first()
+        if not city:
+            city = City.objects.first()
     alt_cities = City.objects.exclude(id=city.id)
     
     d = datetime.now().date()
