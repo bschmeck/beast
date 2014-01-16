@@ -113,4 +113,4 @@ class AccountInfoForm(forms.ModelForm):
     notify = forms.BooleanField(required=False, initial=True, label='Notify Me Of New Workouts')
     notify_adddrop = forms.BooleanField(required=False, initial=False, label='Notify Me As People Add/Drop Workouts I\'m Running')
     primary_city = forms.ModelChoiceField(queryset=City.objects.all(), empty_label=None)
-    cities = forms.ModelMultipleChoiceField(queryset=City.objects.all(), label='Notify Me Of Workouts In These Other Cities')
+    cities = forms.ModelMultipleChoiceField(queryset=City.objects.all(), label='Notify Me Of Workouts In These Other Cities', required=False)
