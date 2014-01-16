@@ -17,6 +17,7 @@ class WorkoutForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         super(forms.ModelForm, self).__init__(*args, **kw)
         self.fields.keyOrder = [
+            'city',
             'title',
             'startDate',
             'startTime',
@@ -37,6 +38,8 @@ class WorkoutForm(forms.ModelForm):
                                          "%H:%M"),
                                  widget=forms.TimeInput(format='%I:%M %p'),
                                  required=False)
+    city = forms.ModelChoiceField(queryset=City.objects.all(), empty_label=None)
+    
     def clean_startDate(self):
         data = self.cleaned_data['startDate']
         if data < datetime.today().date():

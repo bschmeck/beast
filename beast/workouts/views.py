@@ -195,7 +195,7 @@ def createWorkout(request):
             workoutNotify(workout, "Created")
             return HttpResponseRedirect("/")
     else:
-        form = WorkoutForm()
+        form = WorkoutForm(initial={'city': request.user.get_profile().primary_city.pk})
 
     locations = Location.objects.order_by('name')
     locationStr = str(','.join(map(lambda n: '"' + n + '"', locations.values_list('name', flat=True))))

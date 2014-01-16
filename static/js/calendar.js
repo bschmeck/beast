@@ -65,8 +65,12 @@ function buildEdit(locStr) {
         html: true,
         content: 'content'
     };
-    $("input, textarea").popover(opt);
+    $("input, textarea, select").popover(opt);
 
+	$("#id_city").attr({
+	    title: 'Workout City',
+	    content: "Choose a city for this workout."
+	});
 	$("#id_title").attr({
 	    title: 'Workout Title',
 	    content: "Give a short title to the workout."
