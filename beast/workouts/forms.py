@@ -100,7 +100,7 @@ class AccountInfoForm(forms.ModelForm):
             'notify_adddrop',
             'cities'
             ]
-
+        self.fields['cities'].queryset = City.objects.exclude(id=self.instance.primary_city_id)
     displayName = forms.CharField(max_length=30, label='Name To Display')
     weekStart = forms.ChoiceField(choices=((6, 'Sunday'),
                                            (0, "Monday"),
