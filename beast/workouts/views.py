@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedire
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import Context, RequestContext
 from django.template.loader import get_template
+from django.utils.encoding import force_text
 
 from datetime import date, datetime, time, timedelta
 import json
@@ -88,10 +89,8 @@ def account(request):
             f.save()
             ret["success"] = True
         else:
-            msg = ''
-            for k, v in f.errors:
-                msg += "%(k): %(v)\n"
-            ret["msg"] = msg
+            ret['msg'] = '\n'.join(['%s: %s' % (k, '\n'.join(['  * %s' % force_text(i) for i in v])) for k, v in f.errors.items()])
+            
         return HttpResponse(json.dumps(ret), "application/javascript")
     else:
         w = request.user.confirmed_workouts.filter(startDate__gte=today)    
