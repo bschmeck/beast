@@ -41,7 +41,7 @@ def workoutNotify(workout, action, changeMsg=None):
             'changeMsg': changeMsg
             }))
     elif action == "Created":
-        toAddrs = UserProfile.objects.filter(notify=True).values_list('user__email', flat=True)
+        toAddrs = workout.city.user_emails()
         msg = get_template('workouts/workout_notify_create.email').render(Context({
             'workout': workout,
             'url': 'http://beast.shmk.org',

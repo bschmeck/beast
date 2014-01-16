@@ -38,8 +38,8 @@ class UserProfile(models.Model):
     displayName = models.CharField(max_length=50)
     weekStart = models.IntegerField()
     user = models.OneToOneField(User)
-    primary_city = models.ForeignKey('City', null=True, on_delete=models.SET_NULL)
-    cities = models.ManyToManyField('City', related_name='users', blank=True)
+    primary_city = models.ForeignKey('City', related_name='primary_users', null=True, on_delete=models.SET_NULL)
+    cities = models.ManyToManyField('City', related_name='alternate_users', blank=True)
     
     def __unicode__(self):
         return self.displayName
@@ -77,5 +77,10 @@ class City(models.Model):
     def __unicode__(self):
         return self.name
 
+    def user_emails(self):
+        ret = self.primary_users.filter(notify=True).values_list('user__email', flat=True)
+        ret += self.alternate_users.filter(notify=True).values_list('user__email', flat=True)
+        return ret
+        
     class Meta:
         verbose_name_plural = "Cities"
