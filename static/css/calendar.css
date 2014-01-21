@@ -18,9 +18,6 @@ html, body {
     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
     box-shadow: 0 1px 2px rgba(0,0,0,.15);
 }
-.topbar {
-	position: static;
-}
 .topbar .btn {
     border: 0;
 }
@@ -44,6 +41,7 @@ html, body {
 #calHeader {
   width: 100%;
   background-color: #EEEEEE;
+  margin-top: 40px;
 }
 .dayOfWeek {
   width: 14%;
