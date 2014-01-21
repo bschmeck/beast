@@ -19,34 +19,6 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css">
 	<link href='{{ STATIC_URL }}css/calendar.css' rel='stylesheet' type='text/css'>
 
-    <style type="text/css">
-      /* Override some defaults */
-      html, body {
-        background-color: #eee;
-      }
-      .container > footer p {
-        text-align: center; /* center align it with the container */
-      }
-	  .container {
-	    width: 91%;
-	  }
-      /* The white background content wrapper */
-      .content {
-        background-color: #fff;
-
-        -webkit-border-radius: 6px 6px 6px 6px;
-           -moz-border-radius: 6px 6px 6px 6px;
-                border-radius: 6px 6px 6px 6px;
-        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-                box-shadow: 0 1px 2px rgba(0,0,0,.15);
-      }
-
-      .topbar .btn {
-        border: 0;
-      }
-
-    </style>
     <script type="text/javascript">
       $(function() {
 	    buildCalendar();
@@ -74,7 +46,7 @@
 		</div>
 	  </div>
 	</div>
-
+	<div class="clear"></div>
     <div class="container" id="calContainer">
       <div class="content">
 		{% for week in weeks %}
