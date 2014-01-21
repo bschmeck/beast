@@ -33,7 +33,18 @@
 	  <div class="container">
 		<div id="city_picker">
 		  <h1 style="margin-bottom: 0px">{{city.name}}</h1>
-		  <a href="#"><i>Click here to change city</i></a>
+		  <div id="alt_cities" style="display: none;">
+			<table style="margin: 0 auto; width: auto;">
+			  {% for city1, city2 in alt_cities %}
+			  <tr>
+				<td><a href="{{city1.url}}">{{city1.name}}</a></td>
+				<td><a href="{{city2.url}}">{{city2.name}}</a></td>
+			  </tr>
+			  {% endfor %}
+			</table>
+		  </div>
+
+		  <a href="#" id="toggle_link"><i><span id="hidden_text">Click here to change city</span><span id="shown_text" style="display:none;">Hide</span></i></a>
 		</div>
 		
 		<div class="atbottom">

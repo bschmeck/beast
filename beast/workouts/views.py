@@ -277,6 +277,7 @@ def calendar(request, slug=None):
         if not city:
             city = City.objects.first()
     alt_cities = City.objects.exclude(id=city.id)
+    alt_cities = [alt_cities[i:i+2] for i in range(0, len(alt_cities), 2)]
     
     d = datetime.now().date()
     # weekday() gives Monday as 0, Sunday as 6

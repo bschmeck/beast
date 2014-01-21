@@ -175,6 +175,11 @@ function buildCalendar() {
     });
     $("#workout").hide();
 	$("#workout_close").trigger("click");
+    $("#toggle_link").click(function() {
+        $("#alt_cities").toggle();
+        $("#hidden_text").toggle();
+        $("#shown_text").toggle();
+    });
 }
 
 function delWorkout(id) {
