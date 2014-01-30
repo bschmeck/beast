@@ -170,8 +170,12 @@ def updateWorkout(request, w_id):
             
     else:
         form = WorkoutForm(instance=w)
+    locations = {}
+    for city in City.objects.all:
+        
     locations = Location.objects.order_by('name')
     locationStr = str(','.join(map(lambda n: '"' + n + '"', locations.values_list('name', flat=True))))
+    loc_json = { 
     return render_to_response('workouts/edit.djhtml',
                               {'form': form,
                                'action': 'update',

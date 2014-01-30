@@ -51,7 +51,7 @@ function buildAccount() {
 	});
 }
 
-function buildEdit(locStr) {
+function buildEdit(locations) {
 	$(".datePicker").datepicker({
         onSelect: function(dateText, inst) {
             /* Just hardcode this for now.  Could be more elegant. */
@@ -70,7 +70,14 @@ function buildEdit(locStr) {
 	$("#id_city").attr({
 	    title: 'Workout City',
 	    content: "Choose a city for this workout."
-	});
+	}).change(function(elt) {
+        var locs = locations[$(this).val()];
+        var content = "<p>Set the location for the workout.  You can choose from one of the standard locations or specify one of your own.</p>";
+        content += "<p>The standard location choices are:</p>";
+        for (var i = 0; i < locs.length; i++) {
+            content += "<ul>" + locs[i] + "</ul>";            
+        }
+    });
 	$("#id_title").attr({
 	    title: 'Workout Title',
 	    content: "Give a short title to the workout."
@@ -83,12 +90,9 @@ function buildEdit(locStr) {
 	    title: 'Workout Time',
 	    content: "<p>Set the time when the workout will start (the 'go' time.)</p><p>Valid time formats are:</p><ul><li>7:00 am</li><li>9:30 pm</li><li>7:00am</li><li>9:30pm</li><li>7am</li><li>9pm</li><li>7:00</li><li>21:30</li></ul>"
 	});
-    txt = "<p>Set the location for the workout.  You can choose from one of the standard locations or specify one of your own.</p>";
-    txt += "<p>The standard location choices are:</p>";
-    txt += "<ul>" + locStr + "</ul>";
 	$("#id_location").attr({
 	    title: 'Workout Location',
-	    content: txt
+	    content: "<p>Set the location for the workout.  You can choose from one of the standard locations or specify one of your own.</p>"
 	});
 	$("#id_warmupTime").attr({
 	    title: 'Warmup Time',
@@ -100,7 +104,7 @@ function buildEdit(locStr) {
 	});
 	$("#id_notify_organizer").attr({
 	    title: 'Add/Drop Notify',
-		content: "Receive an email whenever anyone joins or drops the workout.",
+		content: "Receive an email whenever anyone joins or drops the workout."
 	});
 
     $("#id_location").bind("focus", function(event, ui) {
