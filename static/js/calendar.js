@@ -73,10 +73,19 @@ function buildEdit(locations) {
 	}).change(function(elt) {
         var locs = locations[$(this).val()];
         var content = "<p>Set the location for the workout.  You can choose from one of the standard locations or specify one of your own.</p>";
-        content += "<p>The standard location choices are:</p>";
+        var names = [];
+        content += "<p>The standard location choices are:</p><ul>";
         for (var i = 0; i < locs.length; i++) {
-            content += "<ul>" + locs[i] + "</ul>";            
+            names.push(locs[i]["name"]);
+            content += "<b><li>" + locs[i]["name"] + "<li></b>" + locs[i]["description"] + "</ul>";            
         }
+        $("#id_location").attr({
+            title: 'Workout Location',
+            content: content
+        }).autocomplete({
+            source: [names.join(",")],
+            minLength: 0
+        });
     });
 	$("#id_title").attr({
 	    title: 'Workout Title',

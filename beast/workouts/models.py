@@ -62,7 +62,7 @@ class Message(models.Model):
 class Location(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
-    city = models.ForeignKey('City', null=True)
+    city = models.ForeignKey('City', null=True, related_name='locations')
     
     def __unicode__(self):
         return self.name

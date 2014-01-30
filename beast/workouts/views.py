@@ -124,6 +124,14 @@ def deleteWorkout(request, w_id):
             ret["errMsg"] = "Error during deletion."
     return HttpResponse(json.dumps(ret), "application/javascript")
 
+def locations():
+    locs = {}
+    for city in City.objects.all():
+        locs[city.id] = []
+        for loc in city.locations.all():
+            locs[city.id].append({"name": loc.name, "description": loc.description})
+    return locs
+            
 @login_required
 def updateWorkout(request, w_id):
     w = get_object_or_404(Workout, pk=w_id)
@@ -170,18 +178,12 @@ def updateWorkout(request, w_id):
             
     else:
         form = WorkoutForm(instance=w)
-    locations = {}
-    for city in City.objects.all:
         
-    locations = Location.objects.order_by('name')
-    locationStr = str(','.join(map(lambda n: '"' + n + '"', locations.values_list('name', flat=True))))
-    loc_json = { 
     return render_to_response('workouts/edit.djhtml',
                               {'form': form,
                                'action': 'update',
                                'w_id': w_id,
-                               'locationStr': locationStr,
-                               'locations': locations},
+                               'locations': json.dumps(locations())},
                               context_instance=RequestContext(request))
 @login_required
 def createWorkout(request):
@@ -200,13 +202,10 @@ def createWorkout(request):
     else:
         form = WorkoutForm(initial={'city': request.user.get_profile().primary_city.pk})
 
-    locations = Location.objects.order_by('name')
-    locationStr = str(','.join(map(lambda n: '"' + n + '"', locations.values_list('name', flat=True))))
     return render_to_response('workouts/edit.djhtml',
                               {'form': form,
                                'action': 'create',
-                               'locationStr': locationStr,
-                               'locations': locations,
+                               'locations': json.dumps(locations()),
                                'firstDay': request.user.get_profile().js_weekStart()},
                               context_instance=RequestContext(request))
 
