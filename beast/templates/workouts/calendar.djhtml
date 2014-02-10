@@ -12,40 +12,13 @@
     <![endif]-->
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-twipsy.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-twipsy.js"></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}js/calendar.js"></script>
 
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css">
 	<link href='{{ STATIC_URL }}css/calendar.css' rel='stylesheet' type='text/css'>
 
-    <style type="text/css">
-      /* Override some defaults */
-      html, body {
-        background-color: #eee;
-      }
-      .container > footer p {
-        text-align: center; /* center align it with the container */
-      }
-	  .container {
-	    width: 91%;
-	  }
-      /* The white background content wrapper */
-      .content {
-        background-color: #fff;
-
-        -webkit-border-radius: 6px 6px 6px 6px;
-           -moz-border-radius: 6px 6px 6px 6px;
-                border-radius: 6px 6px 6px 6px;
-        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-                box-shadow: 0 1px 2px rgba(0,0,0,.15);
-      }
-
-      .topbar .btn {
-        border: 0;
-      }
-
-    </style>
     <script type="text/javascript">
       $(function() {
 	    buildCalendar();
@@ -58,6 +31,22 @@
 	{% include "workouts/topbar.djhtml" with active="calendar" %}
 	<div id="calHeader">
 	  <div class="container">
+		<div id="city_picker">
+		  <h1 style="margin-bottom: 0px">{{city.name}}</h1>
+		  <div id="alt_cities" style="display: none;">
+			<table style="margin: 0 auto; width: auto;">
+			  {% for city1, city2 in alt_cities %}
+			  <tr>
+				<td><a href="{{city1.url}}">{{city1.name}}</a></td>
+				<td><a href="{{city2.url}}">{{city2.name}}</a></td>
+			  </tr>
+			  {% endfor %}
+			</table>
+		  </div>
+
+		  <a href="#" id="toggle_link"><i><span id="hidden_text">Click here to change city</span><span id="shown_text" style="display:none;">Hide</span></i></a>
+		</div>
+		
 		<div class="atbottom">
 		  <div class="daySpacer">&nbsp;</div>
 		  {% for day in days %}
@@ -68,7 +57,7 @@
 		</div>
 	  </div>
 	</div>
-
+	<div class="clear"></div>
     <div class="container" id="calContainer">
       <div class="content">
 		{% for week in weeks %}

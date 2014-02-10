@@ -56,16 +56,7 @@
 	<script type="text/javascript" src="{{ STATIC_URL }}js/calendar.js"></script>
 	<script type="text/javascript">
 	  $(function() {
-        $("#id_location").autocomplete({
-          source: [{{locationStr|safe}}],
-          minLength: 0,
-        });
-	  locStr = "";
-	  {% for loc in locations %}
-        locStr += "<b><li>{{loc.name}}</li></b>{{loc.description}}";
-      {% endfor %}
-	
-	  buildEdit(locStr);
+	  buildEdit({{locations|safe}});
 	  $(".datePicker").datepicker("option", "firstDay", {{firstDay}});
 
 	  $('#workoutForm').bind('submit',function(e){

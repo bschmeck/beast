@@ -76,7 +76,7 @@
 		  <div class="alert-message block-message info workout">
 			{{workout.title}}<br>
 			{{workout.startDate}} @ {{workout.startTime}}<br>
-			{{workout.location}}<br>
+			{{workout.location}} ({{workout.city.name}})<br>
 			<p>{{workout.description|linebreaksbr}}</p>
 		  </div>
 		  {% endfor %}

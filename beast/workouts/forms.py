@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from datetime import datetime
 
-from workouts.models import UserProfile, Workout
+from workouts.models import City, UserProfile, Workout
 
 def make_custom_datefield(f):
     formfield = f.formfield()
@@ -17,6 +17,7 @@ class WorkoutForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         super(forms.ModelForm, self).__init__(*args, **kw)
         self.fields.keyOrder = [
+            'city',
             'title',
             'startDate',
             'startTime',
@@ -37,6 +38,8 @@ class WorkoutForm(forms.ModelForm):
                                          "%H:%M"),
                                  widget=forms.TimeInput(format='%I:%M %p'),
                                  required=False)
+    city = forms.ModelChoiceField(queryset=City.objects.all(), empty_label=None)
+    
     def clean_startDate(self):
         data = self.cleaned_data['startDate']
         if data < datetime.today().date():
@@ -59,6 +62,7 @@ class RegistrationForm(forms.Form):
                                            (3, "Thursday"),
                                            (4, "Friday"),
                                            (5, "Saturday")), label='First Day Of The Week')
+    primary_city = forms.ModelChoiceField(queryset=City.objects.all(), empty_label=None)
                                            
     notify = forms.BooleanField(required=False, initial=True, label='Notify Me Of New Workouts')
     notify_adddrop = forms.BooleanField(required=False, initial=False, label='Notify Me As People Add/Drop Workouts I\'m Running')
@@ -90,10 +94,13 @@ class AccountInfoForm(forms.ModelForm):
         super(forms.ModelForm, self).__init__(*args, **kw)
         self.fields.keyOrder = [
             'displayName',
+            'primary_city',
             'weekStart',
             'notify',
-            'notify_adddrop']
-
+            'notify_adddrop',
+            'cities'
+            ]
+        self.fields['cities'].queryset = City.objects.exclude(id=self.instance.primary_city_id)
     displayName = forms.CharField(max_length=30, label='Name To Display')
     weekStart = forms.ChoiceField(choices=((6, 'Sunday'),
                                            (0, "Monday"),
@@ -105,3 +112,5 @@ class AccountInfoForm(forms.ModelForm):
                                            
     notify = forms.BooleanField(required=False, initial=True, label='Notify Me Of New Workouts')
     notify_adddrop = forms.BooleanField(required=False, initial=False, label='Notify Me As People Add/Drop Workouts I\'m Running')
+    primary_city = forms.ModelChoiceField(queryset=City.objects.all(), empty_label=None)
+    cities = forms.ModelMultipleChoiceField(queryset=City.objects.all(), label='Notify Me Of Workouts In These Other Cities', required=False)

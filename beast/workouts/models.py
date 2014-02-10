@@ -15,6 +15,7 @@ class Workout(models.Model):
     tags = models.ManyToManyField('Tag', blank=True, null=True)
     title = models.CharField(max_length=50)
     notify_organizer = models.BooleanField("Notify Me On Add/Drop", blank=True, default=False)
+    city = models.ForeignKey('City', related_name='workouts', null=True, on_delete=models.SET_NULL)
     
     def __unicode__(self):
         return str(self.startDate) + " - " + self.title
@@ -37,7 +38,9 @@ class UserProfile(models.Model):
     displayName = models.CharField(max_length=50)
     weekStart = models.IntegerField()
     user = models.OneToOneField(User)
-
+    primary_city = models.ForeignKey('City', related_name='primary_users', null=True, on_delete=models.SET_NULL)
+    cities = models.ManyToManyField('City', related_name='alternate_users', blank=True)
+    
     def __unicode__(self):
         return self.displayName
 
@@ -59,6 +62,25 @@ class Message(models.Model):
 class Location(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
-
+    city = models.ForeignKey('City', null=True, related_name='locations')
+    
     def __unicode__(self):
         return self.name
+
+class City(models.Model):
+    name = models.CharField(max_length=256, unique=True)
+    slug = models.CharField(max_length=256, unique=True)
+
+    def url(self):
+        return "/city/%s" % (self.slug)
+    
+    def __unicode__(self):
+        return self.name
+
+    def user_emails(self):
+        ret = self.primary_users.filter(notify=True).values_list('user__email', flat=True)
+        ret += self.alternate_users.filter(notify=True).values_list('user__email', flat=True)
+        return ret
+        
+    class Meta:
+        verbose_name_plural = "Cities"

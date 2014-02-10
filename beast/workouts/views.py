@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedire
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import Context, RequestContext
 from django.template.loader import get_template
+from django.utils.encoding import force_text
 
 from datetime import date, datetime, time, timedelta
 import json
@@ -17,7 +18,7 @@ import string
 import sys
 
 from forms import AccountInfoForm, RegistrationForm, WorkoutForm
-from models import Location, Message, UserProfile, Workout
+from models import City, Location, Message, UserProfile, Workout
 
 def workoutNotify(workout, action, changeMsg=None):
     if action == "Modified" or action == "Deleted":
@@ -40,7 +41,7 @@ def workoutNotify(workout, action, changeMsg=None):
             'changeMsg': changeMsg
             }))
     elif action == "Created":
-        toAddrs = UserProfile.objects.filter(notify=True).values_list('user__email', flat=True)
+        toAddrs = workout.city.user_emails()
         msg = get_template('workouts/workout_notify_create.email').render(Context({
             'workout': workout,
             'url': 'http://beast.shmk.org',
@@ -88,10 +89,8 @@ def account(request):
             f.save()
             ret["success"] = True
         else:
-            msg = ''
-            for k, v in f.errors:
-                msg += "%(k): %(v)\n"
-            ret["msg"] = msg
+            ret['msg'] = '\n'.join(['%s: %s' % (k, '\n'.join(['  * %s' % force_text(i) for i in v])) for k, v in f.errors.items()])
+            
         return HttpResponse(json.dumps(ret), "application/javascript")
     else:
         w = request.user.confirmed_workouts.filter(startDate__gte=today)    
@@ -125,6 +124,14 @@ def deleteWorkout(request, w_id):
             ret["errMsg"] = "Error during deletion."
     return HttpResponse(json.dumps(ret), "application/javascript")
 
+def locations():
+    locs = {}
+    for city in City.objects.all():
+        locs[city.id] = []
+        for loc in city.locations.all():
+            locs[city.id].append({"name": loc.name, "description": loc.description})
+    return locs
+            
 @login_required
 def updateWorkout(request, w_id):
     w = get_object_or_404(Workout, pk=w_id)
@@ -171,14 +178,12 @@ def updateWorkout(request, w_id):
             
     else:
         form = WorkoutForm(instance=w)
-    locations = Location.objects.order_by('name')
-    locationStr = str(','.join(map(lambda n: '"' + n + '"', locations.values_list('name', flat=True))))
+        
     return render_to_response('workouts/edit.djhtml',
                               {'form': form,
                                'action': 'update',
                                'w_id': w_id,
-                               'locationStr': locationStr,
-                               'locations': locations},
+                               'locations': json.dumps(locations())},
                               context_instance=RequestContext(request))
 @login_required
 def createWorkout(request):
@@ -195,15 +200,12 @@ def createWorkout(request):
             workoutNotify(workout, "Created")
             return HttpResponseRedirect("/")
     else:
-        form = WorkoutForm()
+        form = WorkoutForm(initial={'city': request.user.get_profile().primary_city.pk})
 
-    locations = Location.objects.order_by('name')
-    locationStr = str(','.join(map(lambda n: '"' + n + '"', locations.values_list('name', flat=True))))
     return render_to_response('workouts/edit.djhtml',
                               {'form': form,
                                'action': 'create',
-                               'locationStr': locationStr,
-                               'locations': locations,
+                               'locations': json.dumps(locations()),
                                'firstDay': request.user.get_profile().js_weekStart()},
                               context_instance=RequestContext(request))
 
@@ -217,7 +219,8 @@ def accountCreate(request):
             displayName = form.cleaned_data['displayName']
             notify = form.cleaned_data['notify']
             weekStart = form.cleaned_data['weekStart']
-
+            city = form.cleaned_data['primary_city']
+            
             with transaction.commit_on_success():
                 username = genUserName()
                 new_user = User.objects.create_user(username=username,
@@ -230,6 +233,7 @@ def accountCreate(request):
                 profile.displayName = displayName
                 profile.notify = notify
                 profile.weekStart = weekStart
+                profile.primary_city = city
                 profile.save()
 
             user = auth.authenticate(username=username, password=pwd)
@@ -263,12 +267,21 @@ class CalendarDay:
     def dateStr(self):
         return datetime.strftime(self.dte, "%m/%d")
 
-def calendar(request):
+def calendar(request, slug=None):
+    city = None
+    if slug:
+        city = get_object_or_404(City, slug=slug)
     if request.user.is_authenticated():
         weekStart = request.user.get_profile().weekStart
+        if not city:
+            city = request.user.get_profile().primary_city
     else:
         weekStart = 6
-
+        if not city:
+            city = City.objects.first()
+    alt_cities = City.objects.exclude(id=city.id)
+    alt_cities = [alt_cities[i:i+2] for i in range(0, len(alt_cities), 2)]
+    
     d = datetime.now().date()
     # weekday() gives Monday as 0, Sunday as 6
     # Back up the correct number of days to reach the start day
@@ -286,7 +299,7 @@ def calendar(request):
                 days.append(d.strftime('%A'))
             in_past = d < datetime.now().date()
             c = CalendarDay(d, in_past=in_past)
-            for workout in Workout.objects.filter(startDate=d).order_by("startTime"):
+            for workout in city.workouts.filter(startDate=d).order_by("startTime"):
                 if request.user.is_authenticated():
                     highlight = request.user in workout.confirmed.all() or request.user in workout.interested.all()
                 else:
@@ -300,7 +313,9 @@ def calendar(request):
         ret.append(w)
     return render_to_response('workouts/calendar.djhtml',
                               {'days': days,
-                               'weeks': ret},
+                               'weeks': ret,
+                               'city': city,
+                               'alt_cities': alt_cities},
                               context_instance=RequestContext(request))
 
 def getWorkout(request, w_id):
