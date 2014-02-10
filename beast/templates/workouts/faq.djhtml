@@ -50,7 +50,7 @@
 		<h2>BEAST Operation</h2>
 		<div class="qna">
 		  <b>Q: What is BEAST?</b><br>
-		  <b>A:</b> A way to collaboratively schedule runs and workouts with others in the Boston area.
+		  <b>A:</b> A way to collaboratively schedule runs and workouts with others in your area.
 		</div>
 
 		<div class="qna">
@@ -75,7 +75,7 @@
 
 		<div class="qna">
 		  <b>Q: How do I add to the list of default locations?</b><br>
-		  <b>A:</b> Just email Ben and ask.
+		  <b>A:</b> Just email Ben (ben dot schmeckpeper at gmail dot com) and ask.
 		</div>
 
 		<div class="qna">
@@ -88,6 +88,34 @@
 		  <b>A:</b> Blame Brian Harvey.
 		</div>
 
+        <div id="cities">
+          <h2>BEAST Cities</h2>
+          <div class="qna">
+			<b>Q: Why is a workout associated with a city?</b><br>
+			<b>A:</b> Initially, BEAST was only used by runners in the Boston/Cambridge area, and all workouts were understood to be occurring in or around Boston.  However, as people have moved away from Boston, there has been demand for BEAST to support workouts in cities other than Boston/Cambridge.
+		  </div>
+
+          <div class="qna">
+			<b>Q: How does BEAST decide which city to show me when I visit?</b><br>
+			<b>A:</b> When you created your account, you chose your "primary city" (or you were assigned Boston by default if you account existed before BEAST supported cities) and BEAST will show workouts from that city on the calendar.  To change your primary city, use the "My Account" section of the site.  To change the city displayed on the calendar, use the navigation links on the calendar page.
+		  </div>
+
+          <div class="qna">
+			<b>Q: I don't care about workouts in San Francisco.  Will I be emailed about them?</b><br>
+			<b>A:</b> You will receive emails about all workouts created in your primary city (unless you've opted out of email notifications.)  If you're interested in workouts in cities other than your primary city, you can choose "alternate cities" in the My Account area.  You will receive notifications about workouts created in your alternate cities, as well.
+		  </div>
+
+          <div class="qna">
+			<b>Q: Can I join a workout that's not in my primary city and not in one of my alternate cities?</b><br>
+			<b>A:</b> Of course.  There are no restrictions on which workouts you're able to join.  The designation of primary and alternate cities is used to determine which workouts to notify you about, to determine which city to display on the calendar and is also the default city for any workouts you create. 
+		  </div>
+
+          <div class="qna">
+			<b>Q: I don't see my city on the site.  Can it be added?</b><br>
+			<b>A:</b> If you'd like BEAST to support workouts in your city, email your request to ben dot schmeckpeper at gmail dot com.
+		  </div>
+        </div>
+        
 		<div id="commands">
 		  <h2>BEAST Commands</h2>
 		  <div class="qna">
