@@ -117,8 +117,9 @@ function buildLocations(locs) {
     content += "<p>The standard location choices are:</p><ul>";
     for (var i = 0; i < locs.length; i++) {
         names.push(locs[i]["name"]);
-        content += "<b><li>" + locs[i]["name"] + "<li></b>" + locs[i]["description"] + "</ul>";            
+        content += "<li><b>" + locs[i]["name"] + "</b><br>" + locs[i]["description"] + "</li>";            
     }
+    content += "</ul>";
     $("#id_location").attr({
         title: 'Workout Location',
         content: content
