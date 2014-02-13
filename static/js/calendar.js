@@ -71,21 +71,7 @@ function buildEdit(locations) {
 	    title: 'Workout City',
 	    content: "Choose a city for this workout."
 	}).change(function(elt) {
-        var locs = locations[$(this).val()];
-        var content = "<p>Set the location for the workout.  You can choose from one of the standard locations or specify one of your own.</p>";
-        var names = [];
-        content += "<p>The standard location choices are:</p><ul>";
-        for (var i = 0; i < locs.length; i++) {
-            names.push(locs[i]["name"]);
-            content += "<b><li>" + locs[i]["name"] + "<li></b>" + locs[i]["description"] + "</ul>";            
-        }
-        $("#id_location").attr({
-            title: 'Workout Location',
-            content: content
-        }).autocomplete({
-            source: [names.join(",")],
-            minLength: 0
-        });
+        buildLocations(locations[$(this).val()]);
     });
 	$("#id_title").attr({
 	    title: 'Workout Title',
@@ -119,9 +105,27 @@ function buildEdit(locations) {
     $("#id_location").bind("focus", function(event, ui) {
       $(this).autocomplete("search");
     });
-    
+
+    buildLocations(locations[$("#id_city").val()]);
     $("input[type='text']:first").focus();
 
+}
+
+function buildLocations(locs) {
+    var content = "<p>Set the location for the workout.  You can choose from one of the standard locations or specify one of your own.</p>";
+    var names = [];
+    content += "<p>The standard location choices are:</p><ul>";
+    for (var i = 0; i < locs.length; i++) {
+        names.push(locs[i]["name"]);
+        content += "<b><li>" + locs[i]["name"] + "<li></b>" + locs[i]["description"] + "</ul>";            
+    }
+    $("#id_location").attr({
+        title: 'Workout Location',
+        content: content
+    }).autocomplete({
+        source: names,
+        minLength: 0
+    });
 }
 
 function buildCalendar() {
