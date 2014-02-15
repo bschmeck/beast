@@ -78,9 +78,9 @@ class City(models.Model):
         return self.name
 
     def user_emails(self):
-        ret = self.primary_users.filter(notify=True).values_list('user__email', flat=True)
-        ret += self.alternate_users.filter(notify=True).values_list('user__email', flat=True)
-        return ret
+        ret = list(self.primary_users.filter(notify=True).values_list('user__email', flat=True))
+        ret += list(self.alternate_users.filter(notify=True).values_list('user__email', flat=True))
+        return list(set(ret))
         
     class Meta:
         verbose_name_plural = "Cities"
