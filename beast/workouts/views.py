@@ -278,7 +278,7 @@ def calendar(request, slug=None):
     else:
         weekStart = 6
         if not city:
-            city = City.objects.first()
+            city = City.objects.all()[0]
     alt_cities = City.objects.exclude(id=city.id)
     alt_cities = [alt_cities[i:i+2] for i in range(0, len(alt_cities), 2)]
     
