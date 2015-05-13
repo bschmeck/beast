@@ -21,6 +21,7 @@ from forms import AccountInfoForm, RegistrationForm, WorkoutForm
 from models import City, Location, Message, UserProfile, Workout
 
 def workoutNotify(workout, action, changeMsg=None):
+    bccAddrs = []
     if action == "Modified" or action == "Deleted":
         toAddrs = workout.confirmed.values_list('email', flat=True) | workout.interested.values_list('email', flat=True)
         msg = get_template('workouts/workout_notify_update.email').render(Context({
@@ -41,7 +42,8 @@ def workoutNotify(workout, action, changeMsg=None):
             'changeMsg': changeMsg
             }))
     elif action == "Created":
-        toAddrs = workout.city.user_emails()
+        toAddrs = [workout.addr()]
+        bccAddrs = workout.city.user_emails()
         msg = get_template('workouts/workout_notify_create.email').render(Context({
             'workout': workout,
             'url': 'http://beast.shmk.org',
@@ -58,7 +60,7 @@ def workoutNotify(workout, action, changeMsg=None):
     fromAddr = workout.addr()
 
     messages = []
-    messages.append(mail.EmailMessage(subj, msg, fromAddr, toAddrs))
+    messages.append(mail.EmailMessage(subj, msg, fromAddr, toAddrs, bccAddrs))
     conn = mail.get_connection()
     conn.send_messages(messages)
 
