@@ -163,7 +163,7 @@ def updateWorkout(request, w_id):
             if old_desc != w.description:
                 changeText += genChangeText('Description', old_desc, w.description)
  
-            with transaction.commit_on_success():
+            with transaction.atomic():
                 form.save()
                 if changeText != '':
                     msg = Message()
@@ -223,7 +223,7 @@ def accountCreate(request):
             weekStart = form.cleaned_data['weekStart']
             city = form.cleaned_data['primary_city']
             
-            with transaction.commit_on_success():
+            with transaction.atomic():
                 username = genUserName()
                 new_user = User.objects.create_user(username=username,
                                                     email = email,
