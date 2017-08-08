@@ -16,7 +16,7 @@
   <tr><td class="desc">Warmup</td><td>{{workout.warmupTime}}</td></tr>
 {% endif %}
 <tr><td class="desc">Description</td><td>{{workout.description|linebreaksbr}}</td></tr>
-<tr><td class="desc">Organizer</td><td>{{workout.organizer.get_profile.displayName}} ({{workout.organizer.email}})</td></tr>
+<tr><td class="desc">Organizer</td><td>{{workout.organizer.userprofile.displayName}} ({{workout.organizer.email}})</td></tr>
 <tr><td class="desc">Email List</td><td><a href="mailto:{{workout.addr}}" id="workoutAddr" data-placement='right' rel='twipsy' title="Send email to this address to reach all interested and confirmed runners.">{{workout.addr}}</a></td></tr>
 <tr><td class="desc">Confirmed</td><td id="confirmed">{% for u in confirmed %} {{u}}, {% endfor %}</td></tr>
 <tr><td class="desc">Interested</td><td id="interested">{% for u in interested %} {{u}}, {% endfor %}</td></tr>
@@ -39,7 +39,7 @@
 <div id="workoutMessages" class="span8">
 {% for msg in messages %}
 <div class="alert-message info">
-{{msg.get_msgType_display}} from {{msg.sender.get_profile.displayName}}<br>
+{{msg.get_msgType_display}} from {{msg.sender.userprofile.displayName}}<br>
 {{msg.msgDate}}<br>
 ------<br>
 {{msg.text|linebreaksbr}}

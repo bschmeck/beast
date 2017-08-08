@@ -81,7 +81,7 @@ def timeStr(t):
 @login_required
 def account(request):
     today = datetime.now().date()
-    u = request.user.get_profile()
+    u = request.user.userprofile
 
     if request.method == 'POST':
         f = AccountInfoForm(request.POST, instance=u)
@@ -202,13 +202,13 @@ def createWorkout(request):
             workoutNotify(workout, "Created")
             return HttpResponseRedirect("/")
     else:
-        form = WorkoutForm(initial={'city': request.user.get_profile().primary_city.pk})
+        form = WorkoutForm(initial={'city': request.user.userprofile.primary_city.pk})
 
     return render_to_response('workouts/edit.djhtml',
                               {'form': form,
                                'action': 'create',
                                'locations': json.dumps(locations()),
-                               'firstDay': request.user.get_profile().js_weekStart()},
+                               'firstDay': request.user.userprofile.js_weekStart()},
                               context_instance=RequestContext(request))
 
 @user_passes_test(lambda u: u.is_anonymous)
@@ -274,9 +274,9 @@ def calendar(request, slug=None):
     if slug:
         city = get_object_or_404(City, slug=slug)
     if request.user.is_authenticated():
-        weekStart = request.user.get_profile().weekStart
+        weekStart = request.user.userprofile.weekStart
         if not city:
-            city = request.user.get_profile().primary_city
+            city = request.user.userprofile.primary_city
     else:
         weekStart = 6
         if not city:
@@ -322,8 +322,8 @@ def calendar(request, slug=None):
 
 def getWorkout(request, w_id):
     w = get_object_or_404(Workout, pk=w_id)
-    confirmed = map(lambda u: u.get_profile().displayName, w.confirmed.all())
-    interested = map(lambda u: u.get_profile().displayName, w.interested.all())
+    confirmed = map(lambda u: u.userprofile.displayName, w.confirmed.all())
+    interested = map(lambda u: u.userprofile.displayName, w.interested.all())
     messages = w.message_set.all().order_by("-msgDate")
     try:
         loc = Location.objects.get(name=w.location)
@@ -367,25 +367,25 @@ def joinWorkout(request, w_id):
         action = "Joined"
         request.user.confirmed_workouts.add(w)
         request.user.possible_workouts.remove(w)
-        changeStr = "%s joined the workout" % request.user.get_profile().displayName
+        changeStr = "%s joined the workout" % request.user.userprofile.displayName
     elif action == "maybe":
         action = "Joined"
         request.user.confirmed_workouts.remove(w)
         request.user.possible_workouts.add(w)
-        changeStr = "%s is a maybe for the workout" % request.user.get_profile().displayName
+        changeStr = "%s is a maybe for the workout" % request.user.userprofile.displayName
     else:
         action = "Dropped"
         request.user.confirmed_workouts.remove(w)
         request.user.possible_workouts.remove(w)
-        changeStr = "%s dropped the workout" % request.user.get_profile().displayName
+        changeStr = "%s dropped the workout" % request.user.userprofile.displayName
 
     if changeStr:
         m = Message(msgType="CHANGE", workout=w, text=changeStr, sender=request.user, msgDate=datetime.now()+timedelta(hours=1))
         m.save()
         workoutNotify(w, action, m)
         
-    confirmed = map(lambda u: u.get_profile().displayName, w.confirmed.all())
-    interested = map(lambda u: u.get_profile().displayName, w.interested.all())
+    confirmed = map(lambda u: u.userprofile.displayName, w.confirmed.all())
+    interested = map(lambda u: u.userprofile.displayName, w.interested.all())
     showJoin = not request.user in w.confirmed.all()
     showMaybe = not request.user in w.interested.all()
     showDrop = not (showJoin and showMaybe)

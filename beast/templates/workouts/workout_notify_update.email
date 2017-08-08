@@ -1,4 +1,4 @@
-{% autoescape off %}{{changeMsg.sender.get_profile.displayName}} has {{action}} the workout "{{workout.title}}" on BEAST for {{workout.startDateStr}}.
+{% autoescape off %}{{changeMsg.sender.userprofile.displayName}} has {{action}} the workout "{{workout.title}}" on BEAST for {{workout.startDateStr}}.
 
 This change occurred at {{changeMsg.msgDate}}.  The details of the change are below.
 

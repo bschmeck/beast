@@ -1,4 +1,4 @@
-{% autoescape off %}{{workout.organizer.get_profile.displayName}} has created a new workout on BEAST for {{workout.startDateStr}}.
+{% autoescape off %}{{workout.organizer.userprofile.displayName}} has created a new workout on BEAST for {{workout.startDateStr}}.
 
 ----
 Title: {{workout.title}}

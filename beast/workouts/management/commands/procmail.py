@@ -27,15 +27,15 @@ class Command(BaseCommand):
         if action == "join":
             user.confirmed_workouts.add(workout)
             user.possible_workouts.remove(workout)
-            changeStr = "%s joined the workout" % user.get_profile().displayName
+            changeStr = "%s joined the workout" % user.userprofile.displayName
         elif action == "maybe":
             user.confirmed_workouts.remove(workout)
             user.possible_workouts.add(workout)
-            changeStr = "%s is a maybe for the workout" % user.get_profile().displayName
+            changeStr = "%s is a maybe for the workout" % user.userprofile.displayName
         elif action == "drop":
             user.confirmed_workouts.remove(workout)
             user.possible_workouts.remove(workout)
-            changeStr = "%s dropped the workout" % user.get_profile().displayName
+            changeStr = "%s dropped the workout" % user.userprofile.displayName
 
         if changeStr:
             m = Message(msgType="CHANGE", workout=workout, text=changeStr, sender=user, msgDate=datetime.now()+timedelta(hours=1))
@@ -104,7 +104,7 @@ class Command(BaseCommand):
         subj = "Message About Workout %s on %s" % (workout.title, str(workout.startDate))
         toAddrs = workout.confirmed.values_list('email', flat=True) | workout.interested.values_list('email', flat=True)
         body = get_template('workouts/workout_notify_msg.email').render(Context({'dateStr': dateStr(msgDate),
-                                                                                 'sender': user.get_profile().displayName if user else fromAddr,
+                                                                                 'sender': user.userprofile.displayName if user else fromAddr,
                                                                                  'msgText': msgText}))
         fromAddr = msg['To']
         conn = mail.get_connection()
