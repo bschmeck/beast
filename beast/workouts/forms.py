@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from datetime import datetime
 
-from workouts.models import City, UserProfile, Workout
+from beast.workouts.models import City, UserProfile, Workout
 
 def make_custom_datefield(f):
     formfield = f.formfield()

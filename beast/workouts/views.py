@@ -18,7 +18,7 @@ import string
 import sys
 
 from forms import AccountInfoForm, RegistrationForm, WorkoutForm
-from models import City, Location, Message, UserProfile, Workout
+from beast.workouts.models import City, Location, Message, UserProfile, Workout
 
 def workoutNotify(workout, action, changeMsg=None):
     bccAddrs = []

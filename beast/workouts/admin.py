@@ -1,4 +1,4 @@
-from workouts.models import City, Location, Message, Tag, UserProfile, Workout
+from beast.workouts.models import City, Location, Message, Tag, UserProfile, Workout
 from django.contrib import admin
 
 admin.site.register(City)
